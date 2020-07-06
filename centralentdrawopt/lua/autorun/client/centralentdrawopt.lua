@@ -74,7 +74,7 @@ end
 
 local function Central_Ent_Draw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
 if (Central_DrawBL) then
-if (Central_Player:GetPos():Distance(Central_Val:GetPos()) < Central_Distance_NoDraw or (Central_Player == LocalPlayer() and Central_Check_Admin(Central_Player)) or (Central_Ent_All_Verif(Central_Player))) then return Central_Ent_DrawBool(Central_Val, false) end
+if (Central_Player:GetPos():Distance(Central_Val:GetPos()) < Central_Distance_NoDraw or (Central_Check_Admin(Central_Player)) or (Central_Ent_All_Verif(Central_Player))) then return Central_Ent_DrawBool(Central_Val, false) end
 if (Central_Bool) then
 local Central_Direct_Ang = math.pi / Central_Degrees_Pi
 local Central_Aim_Vector = Central_Player:GetAimVector()
