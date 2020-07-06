@@ -96,7 +96,7 @@ return Central_Ent_DrawBool(Central_ValAX, false)
 end
 
 local function CentralVehiculeSent(object)
-if (object:IsScripted() and object:IsVehicle()) then
+if (object:IsScripted()) then
 for i =1, #object:GetChildren() do
 CentralTableVehiculeSent[object:GetChildren()[i]] = true
 end
@@ -132,6 +132,7 @@ Central_Ent_DrawAX(Central_Player_Local, true, object)
 end
 end
 if (Central_ObjClass == "prop_physics") then 
+if object:GetSolidFlags() == 4 then continue end      
 if Central_Ent_PosXY <= Central_Distance_Object * Central_Distance_Multiplicateur then
 Central_Ent_DrawAX(Central_Player_Local, false, object)
 else
