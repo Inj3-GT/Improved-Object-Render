@@ -72,7 +72,8 @@ end
 Central_Val_Bool:SetNoDraw(false)
 end
 
-local function Central_Ent_Draw(Central_Player, Central_Bool, Central_Val)
+local function Central_Ent_Draw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
+if (Central_DrawBL) then
 if (Central_Player:GetPos():Distance(Central_Val:GetPos()) < Central_Distance_NoDraw or (Central_Player == LocalPlayer() and Central_Check_Admin(Central_Player)) or (Central_Ent_All_Verif(Central_Player))) then return Central_Ent_DrawBool(Central_Val, false) end
 if (Central_Bool) then
 local Central_Direct_Ang = math.pi / Central_Degrees_Pi
@@ -85,14 +86,13 @@ return Central_Ent_DrawBool(Central_Val, true)
 end
 end
 return Central_Ent_DrawBool(Central_Val, false) 
+else
+if (Central_Check_Admin(Central_Player) or (Central_Ent_All_Verif(Central_Player))) then return Central_Ent_DrawBool(Central_Val, false) end
+if (Central_Bool) then
+return Central_Ent_DrawBool(Central_Val, true) 
 end
-
-local function Central_Ent_DrawAX(Central_PlayerAX, Central_BoolX, Central_ValAX)
-if (Central_Check_Admin(Central_PlayerAX) or (Central_Ent_All_Verif(Central_PlayerAX))) then return Central_Ent_DrawBool(Central_ValAX, false) end
-if (Central_BoolX) then
-return Central_Ent_DrawBool(Central_ValAX, true) 
+return Central_Ent_DrawBool(Central_Val, false) 
 end
-return Central_Ent_DrawBool(Central_ValAX, false) 
 end
 
 local function CentralVehiculeSent(object)
@@ -119,24 +119,24 @@ if ((object:IsNPC() or object.Type == "nextbot") and object:GetSolidFlags() == 2
 continue 
 end
 if Central_Ent_PosXY <= Central_Distance_General * Central_Distance_Multiplicateur then
-Central_Ent_Draw(Central_Player_Local, true, object)
+Central_Ent_Draw(true, Central_Player_Local, true, object)
 else
-Central_Ent_DrawAX(Central_Player_Local, true, object)
+Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end
 if (Central_ObjClass == "prop_vehicle_jeep" and object:IsVehicle()) then
 if Central_Ent_PosXY <= Central_Distance_Vehicule * Central_Distance_Multiplicateur then
-Central_Ent_Draw(Central_Player_Local, true, object)
+Central_Ent_Draw(true, Central_Player_Local, true, object)
 else
-Central_Ent_DrawAX(Central_Player_Local, true, object)
+Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end
 if (Central_ObjClass == "prop_physics") then 
 if object:GetSolidFlags() == 4 then continue end      
 if Central_Ent_PosXY <= Central_Distance_Object * Central_Distance_Multiplicateur then
-Central_Ent_DrawAX(Central_Player_Local, false, object)
+Central_Ent_Draw(false, Central_Player_Local, false, object)
 else
-Central_Ent_DrawAX(Central_Player_Local, true, object)
+Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end	
 if (Central_ObjClass == "player" and object:IsPlayer()) then
@@ -150,9 +150,9 @@ if (Central_Check_Admin(object)) then
 Central_Ent_DrawBool(object, true) 
 else
 if Central_Ent_PosXY <= Central_Distance_Joueur * Central_Distance_Multiplicateur then
-Central_Ent_Draw(Central_Player_Local, true, object)
+Central_Ent_Draw(true, Central_Player_Local, true, object)
 else
-Central_Ent_DrawAX(Central_Player_Local, true, object)
+Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end		
 end
