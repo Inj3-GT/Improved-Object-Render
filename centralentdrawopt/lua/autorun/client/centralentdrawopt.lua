@@ -25,21 +25,22 @@ local Central_TblDrawOptiBlacklist_General = {
 ["class C_ShadowControl"] = true,
 ["class C_WaterLODControl"] = true,
 ["class C_BaseFlex"] = true,
-["func_lod"] = true,
 ["env_sprite"] = true,
 ["env_skypaint"] = true,
+["gmod_button"] = true,
+["gmod_tardis_interior"] = true,
+["gmod_hands"] = true,
+["func_lod"] = true,
 ["phys_bone_follower"] = true, 
 ["manipulate_bone"] = true,
 ["worldspawn"] = true,
 ["viewmodel"] = true,
 ["prop_vehicle_prisoner_pod"] = true,
-["gmod_button"] = true,
 ["msystem_hook_base"] = true,
 ["vfire_cluster"] = true,
 ["raggib"] = true,
 ["npc_headcrab_poison"] = true,
 ["sizehandler"] = true,
-["gmod_tardis_interior"] = true,
 }
 local Central_TblDrawOptiWhiteList = {
 ["prop_vehicle_jeep"] = true,
@@ -110,7 +111,7 @@ local Central_Player_Local = LocalPlayer()
 local Central_Player_VGet = Central_Player_Local:GetVehicle()
 for _, object in pairs( ents.FindByClass( "*" ) ) do
 local Central_ObjClass = object:GetClass()
-if (Central_TblDrawOptiBlacklist_General[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet or object:IsWeapon()) then 
+if (Central_TblDrawOptiBlacklist_General[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet) then 
 continue
 end
 local Central_Ent_PosXY = Central_Player_Local:GetPos():Distance(object:GetPos())
