@@ -110,37 +110,35 @@ local function Central_EntDraw_Optimisation()
 local Central_Player_Local = LocalPlayer()
 local Central_Player_VGet = Central_Player_Local:GetVehicle()
 for _, object in pairs( ents.FindByClass( "*" ) ) do
-local Central_ObjClass = object:GetClass()
-if (Central_TblDrawOptiBlacklist_General[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet or object:IsWeapon()) then 
+if (Central_TblDrawOptiBlacklist_General[object:GetClass()] or object == Central_Player_Local or object == Central_Player_VGet or object:IsWeapon()) then 
 continue
 end
-local Central_Ent_PosXY = Central_Player_Local:GetPos():Distance(object:GetPos())
-if (!Central_TblDrawOptiWhiteList[Central_ObjClass]) then
-if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == 20 and object:GetMoveType()  == 0) or (object:GetSolidFlags() == 16 and object:GetMoveType()  == 3 and !object:GetSpawnEffect()) or (CentralVehiculeSent(object)[object])) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == 0)) then
+if (!Central_TblDrawOptiWhiteList[object:GetClass()]) then
+if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == 20 and object:GetMoveType()  == 0) or (object:GetSolidFlags() == 16 and object:GetMoveType()  == 3 and !object:GetSpawnEffect()) or (CentralVehiculeSent(object)[object])) or (object:GetClass() == "prop_dynamic" and object:GetSolidFlags() == 0)) then
 continue 
 end
-if Central_Ent_PosXY <= Central_Distance_General * Central_Distance_Multiplicateur then
+if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_Distance_General * Central_Distance_Multiplicateur then
 Central_Ent_Draw(true, Central_Player_Local, true, object)
 else
 Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end
-if (Central_ObjClass == "prop_vehicle_jeep" and object:IsVehicle()) then
-if Central_Ent_PosXY <= Central_Distance_Vehicule * Central_Distance_Multiplicateur then
+if (object:GetClass() == "prop_vehicle_jeep" and object:IsVehicle()) then
+if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_Distance_Vehicule * Central_Distance_Multiplicateur then
 Central_Ent_Draw(true, Central_Player_Local, true, object)
 else
 Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end
-if (Central_ObjClass == "prop_physics") then 
+if (object:GetClass() == "prop_physics") then 
 if (object:GetSolidFlags() == 4) then continue end      
-if Central_Ent_PosXY <= Central_Distance_Object * Central_Distance_Multiplicateur then
+if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_Distance_Object * Central_Distance_Multiplicateur then
 Central_Ent_Draw(false, Central_Player_Local, false, object)
 else
 Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end	
-if (Central_ObjClass == "player" and object:IsPlayer()) then
+if (object:GetClass() == "player" and object:IsPlayer()) then
 if (!IsValid(object:GetMoveParent()) and object:GetObserverTarget():IsRagdoll() and !object:GetSpawnEffect()) then 
 if IsValid(object:GetActiveWeapon()) then
 Central_Ent_DrawBool(object:GetActiveWeapon(), true)
@@ -150,7 +148,7 @@ end
 if (Central_Check_Admin(object)) then 
 Central_Ent_DrawBool(object, true) 
 else
-if Central_Ent_PosXY <= Central_Distance_Joueur * Central_Distance_Multiplicateur then
+if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_Distance_Joueur * Central_Distance_Multiplicateur then
 Central_Ent_Draw(true, Central_Player_Local, true, object)
 else
 Central_Ent_Draw(false, Central_Player_Local, true, object)
