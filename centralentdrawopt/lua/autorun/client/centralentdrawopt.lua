@@ -115,7 +115,7 @@ continue
 end
 local Central_Ent_PosXY = Central_Player_Local:GetPos():Distance(object:GetPos())
 if (!Central_TblDrawOptiWhiteList[Central_ObjClass]) then
-if ((object:IsNPC() or object.Type == "nextbot") and object:GetSolidFlags() == 20 or (object:GetMoveType() == 3 and object:GetMaxHealth() == 8)) or (CentralVehiculeSent(object)[object]) then
+if ((object:IsNPC() or object.Type == "nextbot") and object:GetSolidFlags() == 20 or (object:GetMoveType() == 3 and object:GetSolidFlags() == 16)) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags()  == 0)  or (CentralVehiculeSent(object)[object]) then
 continue 
 end
 if Central_Ent_PosXY <= Central_Distance_General * Central_Distance_Multiplicateur then
@@ -132,7 +132,7 @@ Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end
 if (Central_ObjClass == "prop_physics") then 
-if object:GetSolidFlags() == 4 then continue end      
+if (object:GetSolidFlags() == 4) then continue end      
 if Central_Ent_PosXY <= Central_Distance_Object * Central_Distance_Multiplicateur then
 Central_Ent_Draw(false, Central_Player_Local, false, object)
 else
