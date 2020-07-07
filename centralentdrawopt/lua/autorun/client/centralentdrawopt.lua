@@ -111,7 +111,7 @@ local Central_Player_Local = LocalPlayer()
 local Central_Player_VGet = Central_Player_Local:GetVehicle()
 for _, object in pairs( ents.FindByClass( "*" ) ) do
 local Central_ObjClass = object:GetClass()
-if (Central_TblDrawOptiBlacklist_General[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet) then 
+if (Central_TblDrawOptiBlacklist_General[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet or object:IsWeapon()) then 
 continue
 end
 local Central_Ent_PosXY = Central_Player_Local:GetPos():Distance(object:GetPos())
