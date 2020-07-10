@@ -12,7 +12,7 @@ local Central_Distance_Object = 800
 ----- Permanent objects, entities, vehicles, players, doors and more...
 ----- This script can save you between 5 to 70 fps when there are a lot of objects to display on your map.
 local Central_Degrees_Pi, Central_Distance_NoDraw, Central_Distance_Multiplicateur, CentralTableVehiculeSent = 300, 500, 5, {}
-local CentralObjectNumb_1, CentralObjectNumb_2, CentralObjectNumb_3,  CentralObjectNumb_4, CentralObjectNumb_5, CentralObjectNumb_6, CentralObjectNumb_7 = 20, 0, 16, 3, 9, 4, 8
+local CentralObjectNumb_1, CentralObjectNumb_2, CentralObjectNumb_3,  CentralObjectNumb_4, CentralObjectNumb_5, CentralObjectNumb_6, CentralObjectNumb_7, CentralObjectNumb_8 = 20, 0, 16, 3, 9, 4, 8, 132
 local Central__Debug = false
 local Central_TblDrawOptiBlacklist_General = {
 ["class C_PlayerResource"] = true,
@@ -112,11 +112,11 @@ local Central_Player_Local = LocalPlayer()
 local Central_Player_VGet = Central_Player_Local:GetVehicle()
 for _, object in pairs( ents.FindByClass( "*" ) ) do
 local Central_ObjClass = object:GetClass()
-if (Central_TblDrawOptiBlacklist_General[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet or object:IsWeapon()) then 
+if (Central_TblDrawOptiBlacklist_General[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet) then 
 continue
 end
 if (!Central_TblDrawOptiWhiteList[Central_ObjClass]) then
-if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == CentralObjectNumb_1 and object:GetMoveType()  == CentralObjectNumb_2) or (object:GetSolidFlags() == CentralObjectNumb_3 and object:GetMoveType()  == CentralObjectNumb_4 and !object:GetSpawnEffect()) or (CentralVehiculeSent(object)[object])) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == CentralObjectNumb_2 and object:GetRenderGroup() == CentralObjectNumb_5)) then
+if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == CentralObjectNumb_1 and object:GetMoveType()  == CentralObjectNumb_2) or (object:GetSolidFlags() == CentralObjectNumb_3 and object:GetMoveType()  == CentralObjectNumb_4 and !object:GetSpawnEffect()) or (CentralVehiculeSent(object)[object])) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == CentralObjectNumb_2 and object:GetRenderGroup() == CentralObjectNumb_5) or (object:IsWeapon() and object:GetSolidFlags() == CentralObjectNumb_8)) then
 continue 
 end
 if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_Distance_General * Central_Distance_Multiplicateur then
