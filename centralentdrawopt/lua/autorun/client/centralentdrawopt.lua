@@ -4,17 +4,21 @@
 ------------- https://steamcommunity.com/id/Inj3/
 ------------- www.centralcityrp.fr/ --- Affiliated Website 
 ------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
-local Central_Distance_General = 1000
-local Central_Distance_Vehicule = 1100  ----- Default value
+
+---- Configuration / Default Distance Value
+local Central_Distance_General = 1000 
+local Central_Distance_Vehicule = 1100  
 local Central_Distance_Joueur = 1400
-local Central_Distance_Object = 800
------ Works with all maps / Dynamically loads/unloads object visibility
------ Permanent objects, entities, vehicles, players, doors and more...
------ This script can save you between 5 to 70 fps when there are a lot of objects to display on your map.
-local Central_Degrees_Pi, Central_Distance_NoDraw, Central_Distance_Multiplicateur, CentralTableVehiculeSent = 300, 500, 5, {}
-local CentralObjectNumb_1, CentralObjectNumb_2, CentralObjectNumb_3,  CentralObjectNumb_4, CentralObjectNumb_5, CentralObjectNumb_6, CentralObjectNumb_7, CentralObjectNumb_8 = 20, 0, 16, 3, 9, 4, 8, 132
+local Central_Distance_Object = 800 
+----
+
+------ *Do not touch below or you may break the code
+local Central_Degrees_Pi, Central_Distance_NoDraw, Central_Distance_Multiplicateur, CentralTableVehiculeSent, Central_Player_Local = 300, 500, 5, {}
 local Central__Debug = false
-local Central_TblDrawOptiBlacklist_General = {
+local Central_IOR_TableNb = {["CentralObjectNb1"] = 20,["CentralObjectNb2"] = 0,["CentralObjectNb3"] = 16,["CentralObjectNb4"] = 3,["CentralObjectNb5"] = 9,["CentralObjectNb6"] = 4,["CentralObjectNb7"] = 8,["CentralObjectNb8"] = 132,}
+local Central_IOR_Table = {
+WhiteList = {["prop_vehicle_jeep"] = true,["prop_physics"] = true,["player"] = true,},
+BlackList = {
 ["class C_PlayerResource"] = true,
 ["class C_GMODGameRulesProxy"] = true,
 ["class C_RopeKeyframe"] = true,
@@ -42,25 +46,20 @@ local Central_TblDrawOptiBlacklist_General = {
 ["raggib"] = true,
 ["npc_headcrab_poison"] = true,
 ["sizehandler"] = true,
-}
-local Central_TblDrawOptiWhiteList = {
-["prop_vehicle_jeep"] = true,
-["prop_physics"] = true,
-["player"] = true,
-}
-local Central_TblDrawOptiBlacklist_Weapons = {
-["hidcam_placer"] = true,
+["sammyservers_textscreen"] = true,
+},
+Weapons = {["hidcam_placer"] = true,}
 }
 
 local function Central_Ent_All_Verif(Central_VerifPlayer)
-if (IsValid(Central_VerifPlayer:GetActiveWeapon()) and Central_TblDrawOptiBlacklist_Weapons[Central_VerifPlayer:GetActiveWeapon():GetClass()]) or (Central_VerifPlayer:GetViewEntity():GetClass() != "player") then
+if (IsValid(Central_VerifPlayer:GetActiveWeapon()) and Central_IOR_Table.Weapons[Central_VerifPlayer:GetActiveWeapon():GetClass()]) or (Central_VerifPlayer:GetViewEntity():GetClass() != "player") then
 return true
 end
 return false
 end
 
 local function Central_Check_Admin(Central_Player_Check)
-if ((Central_Player_Check:GetMoveType() == CentralObjectNumb_7 and Central_Player_Check:GetNoDraw() == true and !Central_Player_Check:InVehicle()) or ((FSpectate) and FSpectate.getSpecEnt() != nil) or ((FAdmin) and Central_Player_Check:FAdmin_GetGlobal("FAdmin_cloaked"))) then  
+if ((Central_Player_Check:GetMoveType() == Central_IOR_TableNb.CentralObjectNb7 and Central_Player_Check:GetNoDraw() == true and !Central_Player_Check:InVehicle()) or ((FAdmin) and Central_Player_Check:FAdmin_GetGlobal("FAdmin_cloaked"))) then  
 return true 
 end
 return false
@@ -75,8 +74,9 @@ Central_Val_Bool:SetNoDraw(false)
 end
 
 local function Central_Ent_Draw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
+if (Central_Check_Admin(Central_Player) or Central_Ent_All_Verif(Central_Player)) or ((FSpectate) and FSpectate.getSpecEnt() != nil) then return Central_Ent_DrawBool(Central_Val, false) end
 if (Central_DrawBL) then
-if (Central_Player:GetPos():Distance(Central_Val:GetPos()) < Central_Distance_NoDraw or (Central_Check_Admin(Central_Player)) or (Central_Ent_All_Verif(Central_Player))) then return Central_Ent_DrawBool(Central_Val, false) end
+if (Central_Player:GetPos():Distance(Central_Val:GetPos()) < Central_Distance_NoDraw) then return Central_Ent_DrawBool(Central_Val, false) end
 if (Central_Bool) then
 local Central_Direct_Ang = math.pi / Central_Degrees_Pi
 local Central_Aim_Vector = Central_Player:GetAimVector()
@@ -89,7 +89,6 @@ end
 end
 return Central_Ent_DrawBool(Central_Val, false) 
 else
-if (Central_Check_Admin(Central_Player) or (Central_Ent_All_Verif(Central_Player))) then return Central_Ent_DrawBool(Central_Val, false) end
 if (Central_Bool) then
 return Central_Ent_DrawBool(Central_Val, true) 
 end
@@ -108,15 +107,14 @@ return CentralTableVehiculeSent
 end
 
 local function Central_EntDraw_Optimisation()
-local Central_Player_Local = LocalPlayer()
 local Central_Player_VGet = Central_Player_Local:GetVehicle()
 for _, object in pairs( ents.FindByClass( "*" ) ) do
 local Central_ObjClass = object:GetClass()
-if (Central_TblDrawOptiBlacklist_General[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet) then 
+if (Central_IOR_Table.BlackList[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet) then 
 continue
 end
-if (!Central_TblDrawOptiWhiteList[Central_ObjClass]) then
-if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == CentralObjectNumb_1 and object:GetMoveType()  == CentralObjectNumb_2) or (object:GetSolidFlags() == CentralObjectNumb_3 and object:GetMoveType()  == CentralObjectNumb_4 and !object:GetSpawnEffect()) or (CentralVehiculeSent(object)[object])) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == CentralObjectNumb_2 and object:GetRenderGroup() == CentralObjectNumb_5) or (object:IsWeapon() and object:GetSolidFlags() == CentralObjectNumb_8)) then
+if (!Central_IOR_Table.WhiteList[Central_ObjClass]) then
+if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb2) or (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb4 and !object:GetSpawnEffect()) or (CentralVehiculeSent(object)[object])) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb2 and object:GetRenderGroup() == Central_IOR_TableNb.CentralObjectNb5) or (object:IsWeapon() and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb8)) then
 continue 
 end
 if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_Distance_General * Central_Distance_Multiplicateur then
@@ -132,8 +130,8 @@ else
 Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
 end
-if (Central_ObjClass == "prop_physics") then 
-if (object:GetSolidFlags() == CentralObjectNumb_6) then continue end      
+if (Central_ObjClass == "prop_physics" and IsEntity(object)) then 
+if (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb6) then continue end      
 if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_Distance_Object * Central_Distance_Multiplicateur then
 Central_Ent_Draw(false, Central_Player_Local, false, object)
 else
@@ -148,14 +146,14 @@ end
 continue
 end
 if (Central_Check_Admin(object)) then 
-Central_Ent_DrawBool(object, true) 
-else
+Central_Ent_DrawBool(object, true)
+else 
 if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_Distance_Joueur * Central_Distance_Multiplicateur then
 Central_Ent_Draw(true, Central_Player_Local, true, object)
 else
 Central_Ent_Draw(false, Central_Player_Local, true, object)
 end
-end		
+end
 end
 end
 CentralTableVehiculeSent = {}
@@ -167,6 +165,7 @@ if (Central__Debug) then
 timer.Remove(Central_Distance_TimerLoad)
 end
 if timer.Exists(Central_Distance_TimerLoad) then return end
+Central_Player_Local = LocalPlayer()
 timer.Create(Central_Distance_TimerLoad, 0.3, 0, Central_EntDraw_Optimisation ) 
 end
 if (Central__Debug) then
