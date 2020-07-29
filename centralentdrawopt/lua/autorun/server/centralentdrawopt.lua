@@ -9,7 +9,6 @@ util.AddNetworkString("central_ior_rdvdata")
 util.AddNetworkString("central_ior_sndata")
 util.AddNetworkString("central_ior_cmd")
 util.AddNetworkString("central_ior_frm")
-
 local Central_Ior_Sauvegarde, Central_Ior_CMD, Central_Table_Update, Central_IOR =  "improvedobjectrender/sauvegarde", "/objectrender", nil, false
 local Central_Ior_CacheColor, Central_Ior_CacheColor2 = Color(255,0,0), Color( 0, 175, 0 )
 

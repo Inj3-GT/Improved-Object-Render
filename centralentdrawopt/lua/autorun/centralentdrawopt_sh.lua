@@ -24,7 +24,7 @@ player = {
 },
 object = {
 ["enable"] = 1,
-["object"] = 1000,
+["object"] = 800,
 }
 }
 
@@ -52,6 +52,8 @@ Central_Table_IOR.Language = {
 ["phrase12"] = "Object",
 ["phrase13"] = "Close IOR",
 ["phrase14"] = "Weapons on ground, doors, ragdolls, lamps, permanent objects and more..",
+["phrase15"] = "Disable all module",
+["phrase16"] = "Enable all module",
 }
 end
 

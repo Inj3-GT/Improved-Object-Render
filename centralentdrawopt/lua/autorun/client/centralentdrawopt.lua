@@ -11,36 +11,8 @@ local Central_IOR_Module = {[1] = "general",[2] = "vehicle",[3] = "player",[4] =
 local Central_IOR_TableNb = {["CentralObjectNb1"] = 20,["CentralObjectNb2"] = 0,["CentralObjectNb3"] = 16,["CentralObjectNb4"] = 3,["CentralObjectNb5"] = 9,["CentralObjectNb6"] = 4,["CentralObjectNb7"] = 8,["CentralObjectNb8"] = 132,}
 local Central_IOR_Table = {
 WhiteList = {["prop_vehicle_jeep"] = true,["prop_physics"] = true,["player"] = true,},
-BlackList = {
-["class C_PlayerResource"] = true,
-["class C_GMODGameRulesProxy"] = true,
-["class C_RopeKeyframe"] = true,
-["class C_BaseEntity"] = true,
-["class C_FuncAreaPortalWindow"] = true,
-["class C_FogController"] = true,
-["class C_EnvTonemapController"] = true,
-["class C_Sun"] = true,
-["class C_ShadowControl"] = true,
-["class C_WaterLODControl"] = true,
-["class C_BaseFlex"] = true,
-["env_sprite"] = true,
-["env_skypaint"] = true,
-["gmod_button"] = true,
-["gmod_tardis_interior"] = true,
-["gmod_hands"] = true,
-["func_lod"] = true,
-["phys_bone_follower"] = true, 
-["manipulate_bone"] = true,
-["worldspawn"] = true,
-["viewmodel"] = true,
-["prop_vehicle_prisoner_pod"] = true,
-["msystem_hook_base"] = true,
-["vfire_cluster"] = true,
-["raggib"] = true,
-["npc_headcrab_poison"] = true,
-["sizehandler"] = true,
-["sammyservers_textscreen"] = true,
-},
+BlackList = {["class C_PlayerResource"] = true,["class C_GMODGameRulesProxy"] = true,["class C_RopeKeyframe"] = true,["class C_BaseEntity"] = true,["class C_FuncAreaPortalWindow"] = true,["class C_FogController"] = true,["class C_EnvTonemapController"] = true,["class C_Sun"] = true,["class C_ShadowControl"] = true,["class C_WaterLODControl"] = true,["class C_BaseFlex"] = true,["env_sprite"] = true,["env_skypaint"] = true,["gmod_button"] = true,["gmod_tardis_interior"] = true,
+["gmod_hands"] = true,["func_lod"] = true,["phys_bone_follower"] = true, ["manipulate_bone"] = true,["worldspawn"] = true,["viewmodel"] = true,["prop_vehicle_prisoner_pod"] = true,["msystem_hook_base"] = true,["vfire_cluster"] = true,["raggib"] = true,["npc_headcrab_poison"] = true,["sizehandler"] = true,["sammyservers_textscreen"] = true,},
 Weapons = {["hidcam_placer"] = true,}
 } 
 local Central_ForceDisabled, Central_Dev_Creator, Central_Dev_Version, Central_Player_Local = false, "Inj3", "v2.0"
@@ -82,7 +54,7 @@ Central_Val_Bool:SetNoDraw(false)
 end
 
 local function Central_IOR_EntDraw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
-if (Central_ForceDisabled) or ((Central_IOR_CheckAdmin(Central_Player) or Central_IOR_EntAllVerif(Central_Player)) or ((FSpectate) and FSpectate.getSpecEnt() != nil)) then return Central_IOR_EntDrawBool(Central_Val, false) end
+if (Central_IOR_CheckAdmin(Central_Player) or Central_IOR_EntAllVerif(Central_Player)) or ((FSpectate) and FSpectate.getSpecEnt() != nil) then return Central_IOR_EntDrawBool(Central_Val, false) end
 if (Central_DrawBL) then
 if (Central_Player:GetPos():Distance(Central_Val:GetPos()) < Central_Distance_NoDraw) then return Central_IOR_EntDrawBool(Central_Val, false) end
 if (Central_Bool) then
@@ -121,6 +93,7 @@ local Central_ObjClass = object:GetClass()
 if (Central_IOR_Table.BlackList[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet) then 
 continue
 end
+if (Central_ForceDisabled) then Central_IOR_EntDrawBool(object, false) continue end
 if (Central_ImprovedTable.general["enable"] == 1 and !Central_IOR_Table.WhiteList[Central_ObjClass]) then
 if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb2) or (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb4 and !object:GetSpawnEffect()) or (Central_IOR_SentObject(object)[object])) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb2 and object:GetRenderGroup() == Central_IOR_TableNb.CentralObjectNb5) or (object:IsWeapon() and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb8)) then
 continue 
@@ -184,11 +157,22 @@ if (Central__Debug) then
 Central_IOR_Optimisation_Load()
 end 
 
+local function Central_IOR_EXT()
+Central_IOR_ClientTable = nil
+Central_IOR_ClientTableChange = nil
+net.Start("central_ior_frm")
+net.SendToServer()  
+end
+
 local function Central_IOR_Panel()
-local Central_Frame_ICN, Central_Frame_ICN_1, Central_Frame_ICN_2, Central_Frame_ICN_Font = "icon16/cog.png", "icon16/bullet_wrench.png", "icon16/cross.png", "Default"
+local Central_Frame_ICN, Central_Frame_ICN_1, Central_Frame_ICN_2, Central_Frame_ICN_3, Central_Frame_ICN_4, Central_Frame_ICN_Font = "icon16/cog.png", "icon16/bullet_wrench.png", "icon16/cross.png", "icon16/bullet_green.png", "icon16/bullet_red.png", "Default"
 
 local Central_IOR_ClientTable = Central_ImprovedTable
 local Central_IOR_ClientTableChange = table.Copy( Central_IOR_ClientTable )
+local Central_IOR_Enable, Central_IOR_EnableColor = "Off", Color( 255, 0, 0, 250 )
+for k, v in pairs(Central_IOR_ClientTable) do
+if v["enable"] == 1 then Central_IOR_Enable = "On" Central_IOR_EnableColor = Color( 0, 125, 0, 255 ) end
+end
 
 local Central_IOR_Frame = vgui.Create( "DFrame" )
 local Central_IOR_Slider_1 = vgui.Create( "DNumSlider", Central_IOR_Frame )
@@ -201,6 +185,7 @@ local Central_IOR_CheckBox_3 = vgui.Create("DCheckBoxLabel", Central_IOR_Frame)
 local Central_IOR_CheckBox_4 = vgui.Create( "DCheckBoxLabel", Central_IOR_Frame)
 local Central_IOR_X1 = vgui.Create( "DButton", Central_IOR_Frame )
 local Central_IOR_X2 = vgui.Create("DButton", Central_IOR_Frame)
+local Central_IOR_X3 = vgui.Create("DButton", Central_IOR_Frame)
 
 Central_IOR_Frame:SetTitle("")
 Central_IOR_Frame:ShowCloseButton(false)
@@ -210,7 +195,7 @@ Central_IOR_Frame:MakePopup()
 Central_IOR_Frame:SetTitle("")
 Central_IOR_Frame:SetPos(ScrW()/2-150, ScrH()/2-200)
 Central_IOR_Frame:SetSize( 0, 0 )
-Central_IOR_Frame:SizeTo( 280, 400, .5, 0, 10)
+Central_IOR_Frame:SizeTo( 280, 430, .5, 0, 10)
 Central_IOR_Frame.Paint = function( self, w, h )
 draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, 240))
 draw.RoundedBox( 6, 0, 0, w, 25, Color(0,50,175,240))
@@ -223,8 +208,9 @@ draw.DrawText(  Central_Table_IOR.Language["phrase4"], Central_Frame_ICN_Font, w
 draw.DrawText(  Central_Table_IOR.Language["phrase5"], Central_Frame_ICN_Font, w/2,195, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 draw.DrawText(  Central_Table_IOR.Language["phrase6"], Central_Frame_ICN_Font, w/2,245, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 draw.DrawText(  Central_Table_IOR.Language["phrase7"], Central_Frame_ICN_Font, w/2,295, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
-draw.DrawText( Central_Dev_Creator, Central_Frame_ICN_Font, 17,385, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
-draw.DrawText( Central_Dev_Version, Central_Frame_ICN_Font, w-16,385, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
+draw.DrawText(  "Status : " ..Central_IOR_Enable, Central_Frame_ICN_Font, 35,28, Central_IOR_EnableColor, TEXT_ALIGN_CENTER )
+draw.DrawText( Central_Dev_Creator, Central_Frame_ICN_Font, 15,416, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
+draw.DrawText( Central_Dev_Version, Central_Frame_ICN_Font, w-15,416, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 end
    
 Central_IOR_Slider_1:SetPos( -194, 160 )
@@ -313,11 +299,10 @@ Central_IOR_CheckBox_4.Nom = Central_IOR_Module[4]
 Central_IOR_CheckBox_4.OnChange = Central_IOR_CheckBox_1.OnChange
 Central_IOR_CheckBox_4:SizeToContents()	
  
+Central_IOR_X1:SetPos( 60, 372 )
+Central_IOR_X1:SetSize( 160, 23 ) 
 Central_IOR_X1:SetText( "" )
 Central_IOR_X1:SetImage( Central_Frame_ICN_1 )	
-Central_IOR_X1:SetTextColor( Color( 255, 255, 255 ) )
-Central_IOR_X1:SetPos( 60, 370 )
-Central_IOR_X1:SetSize( 160, 23 )
 Central_IOR_X1.Paint = function( self, w, h )	
 local Central_IOR_VT = math.abs(math.sin(CurTime() * 3) * 255)
 local Central_IOR_VT_A = Color(0, Central_IOR_VT, 0)
@@ -330,20 +315,15 @@ net.Start("central_ior_rdvdata")
 net.WriteTable(Central_IOR_ClientTableChange)
 net.SendToServer()  
 timer.Simple(0.1,function()
-Central_IOR_ClientTable = nil
-Central_IOR_ClientTableChange = nil
-net.Start("central_ior_frm")
-net.SendToServer()  
+Central_IOR_EXT()
 Central_IOR_Frame:Remove()
 end)
 end
  
 Central_IOR_X2:SetPos( 95, 28 ) 
 Central_IOR_X2:SetSize( 90, 18 )
-Central_IOR_X2:SetFont( Central_Frame_ICN_Font )
 Central_IOR_X2:SetText( "" ) 
 Central_IOR_X2:SetImage( Central_Frame_ICN_2 )
-Central_IOR_X2:SetTextColor( Color(0, 0, 0, 220)  )
 function Central_IOR_X2:Paint( w, h )
 local Central_IOR_RD = math.abs(math.sin(CurTime() * 3) * 255)
 local Central_IOR_RD_A = Color(Central_IOR_RD, 0, 0)
@@ -352,11 +332,44 @@ draw.RoundedBox( 6, 2, 1, w-2, h-2, Color(0, 69, 175) )
 draw.DrawText( Central_Table_IOR.Language["phrase13"], Central_Frame_ICN_Font, w/2+5,3, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
 end
 Central_IOR_X2.DoClick = function()
-Central_IOR_ClientTable = nil
-Central_IOR_ClientTableChange = nil
-net.Start("central_ior_frm")
-net.SendToServer()  
+Central_IOR_EXT() 
 Central_IOR_Frame:Remove()
+end
+
+Central_IOR_X3:SetPos( 79, 402 ) 
+Central_IOR_X3:SetSize( 125, 23 )
+Central_IOR_X3:SetText( "" ) 
+if Central_IOR_Enable == "Off" then
+Central_IOR_X3:SetImage( Central_Frame_ICN_3 )
+else
+Central_IOR_X3:SetImage( Central_Frame_ICN_4 )
+end
+function Central_IOR_X3:Paint( w, h )
+local Central_IOR_RD = math.abs(math.sin(CurTime() * 3) * 255)
+local Central_IOR_RD_A = Color(Central_IOR_RD, 0, 0)
+draw.RoundedBox( 6, 3, 0, w-4, h, Central_IOR_RD_A )
+draw.RoundedBox( 6, 2, 1, w-2, h-2, Color(0, 69, 175) )
+if Central_IOR_Enable == "On" then
+draw.DrawText( Central_Table_IOR.Language["phrase15"], Central_Frame_ICN_Font, w/2+6,5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
+else
+draw.DrawText( Central_Table_IOR.Language["phrase16"], Central_Frame_ICN_Font, w/2+6,5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
+end
+end
+Central_IOR_X3.DoClick = function()
+for k, v in pairs(Central_IOR_ClientTableChange) do
+if Central_IOR_Enable == "On" then
+v["enable"] = 0
+else
+v["enable"] = 1
+end
+end
+net.Start("central_ior_rdvdata")
+net.WriteTable(Central_IOR_ClientTableChange)
+net.SendToServer() 
+timer.Simple(0.1,function()
+Central_IOR_EXT() 
+Central_IOR_Frame:Remove()
+end)
 end
 
 end
