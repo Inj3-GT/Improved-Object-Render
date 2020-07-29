@@ -24,22 +24,27 @@ player = {
 },
 object = {
 ["enable"] = 1,
-["object"] = 800,
+["object"] = 1000,
 }
 }
 
+Central_Table_IOR.Language_Server = {
+["phrase1"] = "[Improved Object Render] Success ! Data Loaded !\n",
+["phrase2"] = "[Improved Object Render] Creating Data, please wait..\n",
+["phrase3"] = "[Improved Object Render] Loading Data..\n",
+}
 end
 
 if (CLIENT) then
 --- I will be coding an better language system soon, for the moment change all sentences below.
 Central_Table_IOR.Language = {
-["phrase1"] = "Settings Improved Object Render",
-["phrase2"] = "All values is automatically synchronized \n with all players connected !",
+["phrase1"] = "Settings panel for Improved Object Render",
+["phrase2"] = "All data are automatically synchronized \n with players connected !",
 ["phrase3"] = "Enable/Disable Module :",
-["phrase4"] = "Distance General :",
-["phrase5"] = "Distance Vehicle :",
-["phrase6"] = "Distance Player :",
-["phrase7"] = "Distance Object :",
+["phrase4"] = "General Distance :",
+["phrase5"] = "Vehicle Distance :",
+["phrase6"] = "Player Distance :",
+["phrase7"] = "Object Distance :",
 ["phrase8"] = "Save IOR & synchronized",
 ["phrase9"] = "General",
 ["phrase10"] = "Vehicle",
@@ -48,7 +53,6 @@ Central_Table_IOR.Language = {
 ["phrase13"] = "Close IOR",
 ["phrase14"] = "Weapons on ground, doors, ragdolls, lamps, permanent objects and more..",
 }
-
 end
 
 function widgets.RenderMe() end

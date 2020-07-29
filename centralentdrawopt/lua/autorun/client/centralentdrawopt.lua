@@ -5,7 +5,7 @@
 ------------- www.centralcityrp.fr/ --- Affiliated Website 
 ------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
 ------ *Do not touch below or you may break the code
-local Central_Degrees_Pi, Central_Distance_NoDraw, Central_Distance_Multiplicateur, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Distance_TimerLoad_1, Central_Player_Local = 300, 500, 5, {}, "Central_EntOptimisation", "Central_IORDataSync"
+local Central_Degrees_Pi, Central_Distance_NoDraw, Central_Distance_Multiplicateur, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Distance_TimerLoad_1, Central_IOR_TimerG = 300, 500, 5, {}, "Central_EntOptimisation", "Central_IORDataSync", 0.3
 local Central__Debug = false
 local Central_IOR_Module = {[1] = "general",[2] = "vehicle",[3] = "player",[4] = "object",}
 local Central_IOR_TableNb = {["CentralObjectNb1"] = 20,["CentralObjectNb2"] = 0,["CentralObjectNb3"] = 16,["CentralObjectNb4"] = 3,["CentralObjectNb5"] = 9,["CentralObjectNb6"] = 4,["CentralObjectNb7"] = 8,["CentralObjectNb8"] = 132,}
@@ -43,19 +43,18 @@ BlackList = {
 },
 Weapons = {["hidcam_placer"] = true,}
 } 
-local Central_ForceDisabled, Central_Dev_Creator, Central_Dev_Version = false, "Inj3", "2.0"
-if (!Central__Debug) then
-if (Central_ImprovedTable == nil) then
+local Central_ForceDisabled, Central_Dev_Creator, Central_Dev_Version, Central_Player_Local = false, "Inj3", "v2.0"
+if !Central__Debug then
 local Central_ImprovedTable
-end
 end
 
 local function Central_IOR_Synchro_Data()
 Central_ForceDisabled = true
-Central_ImprovedTableBck = net.ReadTable()
-timer.Create(Central_Distance_TimerLoad_1, 1, 1,function()
-Central_ImprovedTable = Central_ImprovedTableBck
-Central_ImprovedTableBck = nil
+local Central_IOR_SyncReadInt = net.ReadFloat()
+local Central_IOR_SyncReadData = net.ReadData( Central_IOR_SyncReadInt )
+local Central_IOR_SyncDecompress = util.Decompress( Central_IOR_SyncReadData, Central_IOR_SyncReadInt)
+timer.Create(Central_Distance_TimerLoad_1, Central_IOR_TimerG + 0.1, 1,function()
+Central_ImprovedTable = util.JSONToTable( Central_IOR_SyncDecompress )
 Central_ForceDisabled = false
 end)
 end
@@ -168,9 +167,26 @@ end
 CentralTableVehiculeSent = {}
 end
 
-local function Central_IOR_Panel()
+local function Central_IOR_Optimisation_Load()
+if (Central__Debug) then
+timer.Remove(Central_Distance_TimerLoad)
+else
+if timer.Exists(Central_Distance_TimerLoad) then return end
+local Central_IOR_ReadInt = net.ReadFloat()
+local Central_IOR_ReadData = net.ReadData( Central_IOR_ReadInt )
+local Central_IOR_Decompress = util.Decompress( Central_IOR_ReadData, Central_IOR_ReadInt)
+Central_ImprovedTable = util.JSONToTable( Central_IOR_Decompress )
+end
+Central_Player_Local = LocalPlayer()
+timer.Create(Central_Distance_TimerLoad, Central_IOR_TimerG, 0, Central_IOR_EntDrawOptimisation ) 
+end 
+if (Central__Debug) then
+Central_IOR_Optimisation_Load()
+end 
 
+local function Central_IOR_Panel()
 local Central_Frame_ICN, Central_Frame_ICN_1, Central_Frame_ICN_2, Central_Frame_ICN_Font = "icon16/cog.png", "icon16/bullet_wrench.png", "icon16/cross.png", "Default"
+
 local Central_IOR_ClientTable = Central_ImprovedTable
 local Central_IOR_ClientTableChange = table.Copy( Central_IOR_ClientTable )
 
@@ -194,27 +210,27 @@ Central_IOR_Frame:MakePopup()
 Central_IOR_Frame:SetTitle("")
 Central_IOR_Frame:SetPos(ScrW()/2-150, ScrH()/2-200)
 Central_IOR_Frame:SetSize( 0, 0 )
-Central_IOR_Frame:SizeTo( 280, 395, .5, 0, 10)
+Central_IOR_Frame:SizeTo( 280, 400, .5, 0, 10)
 Central_IOR_Frame.Paint = function( self, w, h )
 draw.RoundedBox(8, 0, 0, w, h, Color(255, 255, 255, 240))
-draw.RoundedBox( 6, 0, 0, w, 23, Color(0,50,175,240))
+draw.RoundedBox( 6, 0, 0, w, 25, Color(0,50,175,240))
 draw.RoundedBox( 8, 30, 55, w - 60, 80, Color(0,69,165,250))
 draw.RoundedBox( 8, 32, 57, w - 64, 76, Color(255,255,255,250))
-draw.DrawText( Central_Table_IOR.Language["phrase1"], Central_Frame_ICN_Font, w/2,5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
-draw.DrawText(  Central_Table_IOR.Language["phrase2"], Central_Frame_ICN_Font, w/2,335, Color( 255, 0, 0, 250 ), TEXT_ALIGN_CENTER )
+draw.DrawText( Central_Table_IOR.Language["phrase1"], Central_Frame_ICN_Font, w/2+6,6, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
+draw.DrawText(  Central_Table_IOR.Language["phrase2"], Central_Frame_ICN_Font, w/2,340, Color( 255, 0, 0, 250 ), TEXT_ALIGN_CENTER )
 draw.DrawText(  Central_Table_IOR.Language["phrase3"], Central_Frame_ICN_Font, w/2,61, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 draw.DrawText(  Central_Table_IOR.Language["phrase4"], Central_Frame_ICN_Font, w/2,145, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 draw.DrawText(  Central_Table_IOR.Language["phrase5"], Central_Frame_ICN_Font, w/2,195, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 draw.DrawText(  Central_Table_IOR.Language["phrase6"], Central_Frame_ICN_Font, w/2,245, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 draw.DrawText(  Central_Table_IOR.Language["phrase7"], Central_Frame_ICN_Font, w/2,295, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
-draw.DrawText( Central_Dev_Creator, Central_Frame_ICN_Font, 17,381, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
-draw.DrawText( Central_Dev_Version, Central_Frame_ICN_Font, w-12,381, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
+draw.DrawText( Central_Dev_Creator, Central_Frame_ICN_Font, 17,385, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
+draw.DrawText( Central_Dev_Version, Central_Frame_ICN_Font, w-16,385, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 end
    
 Central_IOR_Slider_1:SetPos( -194, 160 )
 Central_IOR_Slider_1:SetSize( 485, 20 )	
 Central_IOR_Slider_1:SetText( "" )	
-Central_IOR_Slider_1:SetMinMax( 105, 5000 )
+Central_IOR_Slider_1:SetMinMax( 105, 3000 )
 Central_IOR_Slider_1:SetValue(Central_IOR_ClientTable.general["general"])
 Central_IOR_Slider_1:SetDecimals( 0 )
 Central_IOR_Slider_1.Nom = Central_IOR_Module[1]
@@ -226,7 +242,7 @@ end
 Central_IOR_Slider_2:SetPos( -195, 210 )
 Central_IOR_Slider_2:SetSize( 485, 20 )	
 Central_IOR_Slider_2:SetText( "" )	
-Central_IOR_Slider_2:SetMinMax( 105, 5000 )
+Central_IOR_Slider_2:SetMinMax( 105, 3000 )
 Central_IOR_Slider_2:SetValue(Central_IOR_ClientTable.vehicle["vehicle"])
 Central_IOR_Slider_2:SetDecimals( 0 )
 Central_IOR_Slider_2.Nom = Central_IOR_Module[2]
@@ -235,7 +251,7 @@ Central_IOR_Slider_2.OnValueChanged = Central_IOR_Slider_1.OnValueChanged
 Central_IOR_Slider_3:SetPos( -195, 260 )
 Central_IOR_Slider_3:SetSize( 485, 20 )	
 Central_IOR_Slider_3:SetText( "" )	
-Central_IOR_Slider_3:SetMinMax( 105, 5000 )
+Central_IOR_Slider_3:SetMinMax( 105, 3000 )
 Central_IOR_Slider_3:SetValue(Central_IOR_ClientTable.player["player"])
 Central_IOR_Slider_3:SetDecimals( 0 )
 Central_IOR_Slider_3.Nom = Central_IOR_Module[3]
@@ -244,7 +260,7 @@ Central_IOR_Slider_3.OnValueChanged = Central_IOR_Slider_1.OnValueChanged
 Central_IOR_Slider_4:SetPos( -195, 310 )
 Central_IOR_Slider_4:SetSize( 485, 20 )	
 Central_IOR_Slider_4:SetText( "" )	
-Central_IOR_Slider_4:SetMinMax( 105, 5000 ) 
+Central_IOR_Slider_4:SetMinMax( 105, 3000 ) 
 Central_IOR_Slider_4:SetValue(Central_IOR_ClientTable.object["object"])
 Central_IOR_Slider_4:SetDecimals( 0 )
 Central_IOR_Slider_4.Nom = Central_IOR_Module[4]
@@ -300,7 +316,7 @@ Central_IOR_CheckBox_4:SizeToContents()
 Central_IOR_X1:SetText( "" )
 Central_IOR_X1:SetImage( Central_Frame_ICN_1 )	
 Central_IOR_X1:SetTextColor( Color( 255, 255, 255 ) )
-Central_IOR_X1:SetPos( 60, 365 )
+Central_IOR_X1:SetPos( 60, 370 )
 Central_IOR_X1:SetSize( 160, 23 )
 Central_IOR_X1.Paint = function( self, w, h )	
 local Central_IOR_VT = math.abs(math.sin(CurTime() * 3) * 255)
@@ -314,10 +330,10 @@ net.Start("central_ior_rdvdata")
 net.WriteTable(Central_IOR_ClientTableChange)
 net.SendToServer()  
 timer.Simple(0.1,function()
-net.Start("central_ior_frm")
-net.SendToServer()  
 Central_IOR_ClientTable = nil
 Central_IOR_ClientTableChange = nil
+net.Start("central_ior_frm")
+net.SendToServer()  
 Central_IOR_Frame:Remove()
 end)
 end
@@ -336,28 +352,14 @@ draw.RoundedBox( 6, 2, 1, w-2, h-2, Color(0, 69, 175) )
 draw.DrawText( Central_Table_IOR.Language["phrase13"], Central_Frame_ICN_Font, w/2+5,3, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
 end
 Central_IOR_X2.DoClick = function()
-net.Start("central_ior_frm")
-net.SendToServer()  
 Central_IOR_ClientTable = nil
 Central_IOR_ClientTableChange = nil
+net.Start("central_ior_frm")
+net.SendToServer()  
 Central_IOR_Frame:Remove()
 end
 
 end
-
-local function Central_IOR_Optimisation_Load()
-if (Central__Debug) then
-timer.Remove(Central_Distance_TimerLoad)
-else
-Central_ImprovedTable = net.ReadTable()
-end
-if timer.Exists(Central_Distance_TimerLoad) then return end
-Central_Player_Local = LocalPlayer()
-timer.Create(Central_Distance_TimerLoad, 0.3, 0, Central_IOR_EntDrawOptimisation ) 
-end 
-if (Central__Debug) then
-Central_IOR_Optimisation_Load()
-end 
 
 net.Receive("central_ior_sndata", Central_IOR_Synchro_Data)
 net.Receive("central_ior_loadopti", Central_IOR_Optimisation_Load)
