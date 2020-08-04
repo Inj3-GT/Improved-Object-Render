@@ -4,7 +4,6 @@
 ------------- https://steamcommunity.com/id/Inj3/
 ------------- www.centralcityrp.fr/ --- Affiliated Website 
 ------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
-util.AddNetworkString("central_ior_loadopti")
 util.AddNetworkString("central_ior_rdvdata")
 util.AddNetworkString("central_ior_sndata")
 util.AddNetworkString("central_ior_cmd")
@@ -58,18 +57,19 @@ table_broadcast = util.TableToJSON(table_broadcast)
 end
 local Central_Compress_Table = util.Compress(table_broadcast)
 local Central_Compress_Len = string.len(table_broadcast)
-if (numb == 1) then
-net.Start("central_ior_sndata")
+net.Start("central_ior_sndata") 
 net.WriteFloat(Central_Compress_Len)
 net.WriteData(Central_Compress_Table, Central_Compress_Len)
+if (numb == 1) then
+net.WriteBool(true)
 net.Broadcast()
 else
-net.Start("central_ior_loadopti") 
-net.WriteFloat(Central_Compress_Len)
-net.WriteData(Central_Compress_Table, Central_Compress_Len)
+net.WriteBool(false)
 net.Send(player)
 end
 table_broadcast = nil
+Central_Compress_Table = nil
+Central_Compress_Len = nil
 end
 
 local function Central_IOR_SauvegardeData(table, simple, player)
@@ -95,6 +95,7 @@ local function Central_IOR_ChargeData()
 local Central_IOR_LoadInit = util.JSONToTable(file.Read(Central_Ior_Sauvegarde.. "/sv.txt", "DATA"))
 Central_Table_Update  = Central_IOR_LoadInit
 MsgC( Central_Ior_CacheColor2, Central_Table_IOR.Language_Server["phrase1"] )
+Central_IOR_LoadInit = nil
 end
 
 hook.Add("Initialize","Central_IOR_initTable",function()

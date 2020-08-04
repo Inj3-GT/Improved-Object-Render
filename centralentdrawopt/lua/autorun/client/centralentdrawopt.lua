@@ -6,7 +6,7 @@
 ------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
 ------ *Do not touch below or you may break the code
 local Central_Degrees_Pi, Central_Distance_NoDraw, Central_Distance_Multiplicateur, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Distance_TimerLoad_1, Central_IOR_TimerG = 300, 500, 5, {}, "Central_EntOptimisation", "Central_IORDataSync", 0.3
-local Central_ForceDisabled, Central_Dev_Creator, Central_Dev_Version, Central_Player_Local = false, "Inj3", "v2.0"
+local Central_ForceDisabled, Central_Dev_Creator, Central_Dev_Version, Central_Player_Local, Central_CheckData = false, "Inj3", "v2.0"
 local Central__Debug = false
 if !Central__Debug then
 local Central_ImprovedTable
@@ -19,17 +19,6 @@ BlackList = {["class C_PlayerResource"] = true,["class C_GMODGameRulesProxy"] = 
 ["gmod_hands"] = true,["func_lod"] = true,["phys_bone_follower"] = true, ["manipulate_bone"] = true,["worldspawn"] = true,["viewmodel"] = true,["prop_vehicle_prisoner_pod"] = true,["msystem_hook_base"] = true,["vfire_cluster"] = true,["raggib"] = true,["npc_headcrab_poison"] = true,["sizehandler"] = true,["sammyservers_textscreen"] = true,},
 Weapons = {["hidcam_placer"] = true,}
 } 
-
-local function Central_IOR_Synchro_Data()
-Central_ForceDisabled = true
-local Central_IOR_SyncReadInt = net.ReadFloat()
-local Central_IOR_SyncReadData = net.ReadData( Central_IOR_SyncReadInt )
-local Central_IOR_SyncDecompress = util.Decompress( Central_IOR_SyncReadData, Central_IOR_SyncReadInt)
-timer.Create(Central_Distance_TimerLoad_1, Central_IOR_TimerG + 0.1, 1,function()
-Central_ImprovedTable = util.JSONToTable( Central_IOR_SyncDecompress )
-Central_ForceDisabled = false
-end)
-end
 
 local function Central_IOR_EntAllVerif(Central_VerifPlayer)
 if (IsValid(Central_VerifPlayer:GetActiveWeapon()) and Central_IOR_Table.Weapons[Central_VerifPlayer:GetActiveWeapon():GetClass()]) or (Central_VerifPlayer:GetViewEntity():GetClass() != "player") then
@@ -47,10 +36,10 @@ end
 
 local function Central_IOR_EntDrawBool(Central_Val_Bool, Bool)
 if (Bool) then
-Central_Val_Bool:SetNoDraw(true)
+Central_Val_Bool:SetNoDraw(true) --- Objects should not render at all.
 return
 end
-Central_Val_Bool:SetNoDraw(false)
+Central_Val_Bool:SetNoDraw(false) 
 end
 
 local function Central_IOR_EntDraw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
@@ -59,8 +48,9 @@ if (Central_DrawBL) then
 if (Central_Player:GetPos():Distance(Central_Val:GetPos()) < Central_Distance_NoDraw) then return Central_IOR_EntDrawBool(Central_Val, false) end
 if (Central_Bool) then
 local Central_Aim_Vector = Central_Player:GetAimVector()
-local Central_Ent_Vector = Central_Val:GetPos() - Central_Player:EyePos()
-local Central_AimEnt_Vector = Central_Aim_Vector:Dot( Central_Ent_Vector ) / Central_Ent_Vector:Length() 
+local Central_Ent_Vector = Central_Val:GetPos() - Central_Player:GetEyeTrace().StartPos 
+local Central_Lenght_Dot = Central_Ent_Vector:Length() 
+local Central_AimEnt_Vector = Central_Aim_Vector:Dot( Central_Ent_Vector ) / Central_Lenght_Dot
 local Central_Direct_Ang = math.pi / Central_Degrees_Pi
 local Central_IOR_Inf = Central_AimEnt_Vector < Central_Direct_Ang
 if (Central_IOR_Inf) then
@@ -140,21 +130,51 @@ end
 CentralTableVehiculeSent = {}
 end
 
-local function Central_IOR_Optimisation_Load()
+local function Central_Verif_Data()
+Central_CheckData = false
+if (Central_ImprovedTable != nil) then
+for _, data in pairs(Central_ImprovedTable) do
+if data["enable"] == 1 then 
+Central_CheckData = true
+break
+end
+end
+if (Central_CheckData) then
+if !timer.Exists(Central_Distance_TimerLoad) then
+timer.Create(Central_Distance_TimerLoad, Central_IOR_TimerG, 0, Central_IOR_EntDrawOptimisation ) 
+end
+else
+if timer.Exists(Central_Distance_TimerLoad) then
+timer.Remove(Central_Distance_TimerLoad) 
+end
+end
+end
+end
+
+local function Central_IOR_Synchro_Data()
+local Central_IOR_ReadInt = net.ReadFloat()
+local Central_IOR_ReadData = net.ReadData( Central_IOR_ReadInt )
+local Central_ReadBool = net.ReadBool()
+local Central_IOR_Decompress = util.Decompress( Central_IOR_ReadData, Central_IOR_ReadInt)
+Central_Player_Local = LocalPlayer()
+if (Central_ReadBool) then
+Central_ForceDisabled = true
+timer.Create(Central_Distance_TimerLoad_1, Central_IOR_TimerG + 0.1, 1,function()
+Central_ForceDisabled = false
+Central_ImprovedTable = util.JSONToTable( Central_IOR_Decompress )
+Central_Verif_Data()
+end)
+return
+end
 if (Central__Debug) then
 timer.Remove(Central_Distance_TimerLoad)
 else
-if timer.Exists(Central_Distance_TimerLoad) then return end
-local Central_IOR_ReadInt = net.ReadFloat()
-local Central_IOR_ReadData = net.ReadData( Central_IOR_ReadInt )
-local Central_IOR_Decompress = util.Decompress( Central_IOR_ReadData, Central_IOR_ReadInt)
 Central_ImprovedTable = util.JSONToTable( Central_IOR_Decompress )
+Central_Verif_Data()
 end
-Central_Player_Local = LocalPlayer()
-timer.Create(Central_Distance_TimerLoad, Central_IOR_TimerG, 0, Central_IOR_EntDrawOptimisation ) 
-end 
+end
 if (Central__Debug) then
-Central_IOR_Optimisation_Load()
+Central_IOR_Synchro_Data()
 end 
 
 local function Central_IOR_EXT(Central_IOR_DM)
@@ -169,15 +189,15 @@ end
 end
 
 local function Central_IOR_Panel()
+if (Central_ForceDisabled) then chat.AddText( white,"Improved Object Render : ", white, Central_Table_IOR.Language["phrase17"] ) Central_IOR_EXT() return end
 local Central_Frame_ICN, Central_Frame_ICN_1, Central_Frame_ICN_2, Central_Frame_ICN_3, Central_Frame_ICN_4, Central_Frame_ICN_Font = "icon16/cog.png", "icon16/bullet_wrench.png", "icon16/cross.png", "icon16/bullet_green.png", "icon16/bullet_red.png", "Default"
 
 local Central_IOR_ClientTable = Central_ImprovedTable
 local Central_IOR_ClientTableChange = table.Copy( Central_IOR_ClientTable )
 local Central_IOR_PanelColor = {[1] = Color( 255, 255, 255, 255 ),[2] = Color( 255, 0, 0, 250 ),[3] = Color( 0, 0, 0, 255 ),[4] = Color(0,69,175,250),[5] = Color(255, 255, 255, 245),[6] = Color(0,50,175,240),[7] = Color(0,69,165,250)}
 local Central_IOR_Enable, Central_IOR_EnableColor = "Off", Central_IOR_PanelColor[2]
-for k, v in pairs(Central_IOR_ClientTable) do
-if v["enable"] == 1 then Central_IOR_Enable = "On" Central_IOR_EnableColor = Color( 0, 105, 20, 255 ) end
-end
+if (Central_CheckData) then Central_IOR_Enable = "On" Central_IOR_EnableColor = Color( 0, 105, 20, 255 ) end
+
 
 local Central_IOR_Frame = vgui.Create( "DFrame" )
 local Central_IOR_Slider_1 = vgui.Create( "DNumSlider", Central_IOR_Frame )
@@ -377,5 +397,4 @@ end
 end
 
 net.Receive("central_ior_sndata", Central_IOR_Synchro_Data)
-net.Receive("central_ior_loadopti", Central_IOR_Optimisation_Load)
 net.Receive("central_ior_cmd", Central_IOR_Panel)

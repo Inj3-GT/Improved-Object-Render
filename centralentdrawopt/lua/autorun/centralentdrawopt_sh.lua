@@ -54,6 +54,7 @@ Central_Table_IOR.Language = {
 ["phrase14"] = "Weapons on ground, doors, ragdolls, lamps, permanent objects and more..",
 ["phrase15"] = "Disable all module",
 ["phrase16"] = "Enable all module",
+["phrase17"] = "Loading data... please open the panel in a few seconds.",
 }
 end
 
