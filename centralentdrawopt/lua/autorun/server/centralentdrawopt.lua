@@ -82,7 +82,7 @@ file.Write(Central_Ior_Sauvegarde.. "/sv.txt", Central_IOR_UtiLJson )
 if (simple == 1) then
 Central_IOR_BroadcastFunc(Central_IOR_UtiLJson, 1)
 if (IsValid(player)) then
-player:SendLua([[chat.AddText( Color(255,0,0),"Improved Object Render : ", Color(255,255,255), "Data has been perfectly saving and is being sent to all players !" )]])
+player:SendLua([[chat.AddText( Color(255,0,0),"Improved Object Render : ", Color(255,255,255), "Data has been perfectly saving and is being sent to all player !" )]])
 end
 else
 MsgC( Central_Ior_CacheColor2,  Central_Table_IOR.Language_Server["phrase1"] )

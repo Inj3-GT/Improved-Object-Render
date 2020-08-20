@@ -5,20 +5,22 @@
 ------------- www.centralcityrp.fr/ --- Affiliated Website 
 ------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
 ------ *Do not touch below or you may break the code
-local Central_Degrees_Pi, Central_Distance_NoDraw, Central_Distance_Multiplicateur, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Distance_TimerLoad_1, Central_IOR_TimerG = 300, 500, 5, {}, "Central_EntOptimisation", "Central_IORDataSync", 0.3
-local Central_ForceDisabled, Central_Dev_Creator, Central_Dev_Version, Central_Player_Local, Central_CheckData = false, "Inj3", "v2.0"
-local Central__Debug = false
-if !Central__Debug then
-local Central_ImprovedTable
-end
+local Central_Degrees_Pi, Central_Distance_Multiplicateur, Central_Distance_NoDraw, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Player_Local = 300, 7000, 200, {}, "Central_EntOptimisation"
+local Central_ForceDisabled, Central_IOR_TimerG, Central_Distance_TimerLoad_1, Central_CheckData, Central__Debug, Central_Dev_Creator, Central_Dev_Version = false, 0.3, "Central_IORDataSync", false, false, "SW5qMw==", "djIuMA=="
+if (!Central__Debug) then local Central_ImprovedTable end
 local Central_IOR_Module = {[1] = "general",[2] = "vehicle",[3] = "player",[4] = "object",}
 local Central_IOR_TableNb = {["CentralObjectNb1"] = 20,["CentralObjectNb2"] = 0,["CentralObjectNb3"] = 16,["CentralObjectNb4"] = 3,["CentralObjectNb5"] = 9,["CentralObjectNb6"] = 4,["CentralObjectNb7"] = 8,["CentralObjectNb8"] = 132,}
 local Central_IOR_Table = {
-WhiteList = {["prop_vehicle_jeep"] = true,["prop_physics"] = true,["player"] = true,},
-BlackList = {["class C_PlayerResource"] = true,["class C_GMODGameRulesProxy"] = true,["class C_RopeKeyframe"] = true,["class C_BaseEntity"] = true,["class C_FuncAreaPortalWindow"] = true,["class C_FogController"] = true,["class C_EnvTonemapController"] = true,["class C_Sun"] = true,["class C_ShadowControl"] = true,["class C_WaterLODControl"] = true,["class C_BaseFlex"] = true,["env_sprite"] = true,["env_skypaint"] = true,["gmod_button"] = true,["gmod_tardis_interior"] = true,
+["WhiteList"] = {["prop_vehicle_jeep"] = true,["prop_physics"] = true,["player"] = true,},
+["BlackList"] = {["class C_PlayerResource"] = true,["class C_GMODGameRulesProxy"] = true,["class C_RopeKeyframe"] = true,["class C_BaseEntity"] = true,["class C_FuncAreaPortalWindow"] = true,["class C_FogController"] = true,["class C_EnvTonemapController"] = true,["class C_Sun"] = true,["class C_ShadowControl"] = true,["class C_WaterLODControl"] = true,["class C_BaseFlex"] = true,["env_sprite"] = true,["env_skypaint"] = true,["gmod_button"] = true,["gmod_tardis_interior"] = true,
 ["gmod_hands"] = true,["func_lod"] = true,["phys_bone_follower"] = true, ["manipulate_bone"] = true,["worldspawn"] = true,["viewmodel"] = true,["prop_vehicle_prisoner_pod"] = true,["msystem_hook_base"] = true,["vfire_cluster"] = true,["raggib"] = true,["npc_headcrab_poison"] = true,["sizehandler"] = true,["sammyservers_textscreen"] = true,},
-Weapons = {["hidcam_placer"] = true,}
+["Weapons"] = {["hidcam_placer"] = true,}
 } 
+local math = math
+
+local function Central_IOR_CalculDist(player, object, distobj, distmltp)
+return player:GetPos():DistToSqr(object:GetPos()) < (distobj * distmltp)
+end
 
 local function Central_IOR_EntAllVerif(Central_VerifPlayer)
 if (IsValid(Central_VerifPlayer:GetActiveWeapon()) and Central_IOR_Table.Weapons[Central_VerifPlayer:GetActiveWeapon():GetClass()]) or (Central_VerifPlayer:GetViewEntity():GetClass() != "player") then
@@ -45,7 +47,7 @@ end
 local function Central_IOR_EntDraw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
 if (Central_IOR_CheckAdmin(Central_Player) or Central_IOR_EntAllVerif(Central_Player)) or ((FSpectate) and FSpectate.getSpecEnt() != nil) then return Central_IOR_EntDrawBool(Central_Val, false) end
 if (Central_DrawBL) then
-if (Central_Player:GetPos():Distance(Central_Val:GetPos()) < Central_Distance_NoDraw) then return Central_IOR_EntDrawBool(Central_Val, false) end
+if Central_IOR_CalculDist(Central_Player, Central_Val, Central_Distance_NoDraw, Central_IOR_TableNb.CentralObjectNb8) then return Central_IOR_EntDrawBool(Central_Val, false) end
 if (Central_Bool) then
 local Central_Aim_Vector = Central_Player:GetAimVector()
 local Central_Ent_Vector = Central_Val:GetPos() - Central_Player:GetEyeTrace().StartPos 
@@ -88,28 +90,29 @@ if (Central_ImprovedTable.general["enable"] == 1 and !Central_IOR_Table.WhiteLis
 if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb2) or (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb4 and !object:GetSpawnEffect()) or (Central_IOR_SentObject(object)[object])) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb2 and object:GetRenderGroup() == Central_IOR_TableNb.CentralObjectNb5) or (object:IsWeapon() and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb8)) then
 continue 
 end
-if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_ImprovedTable.general["general"] * Central_Distance_Multiplicateur then
+if Central_IOR_CalculDist(Central_Player_Local, object, Central_ImprovedTable.general["general"], Central_Distance_Multiplicateur) then
 Central_IOR_EntDraw(true, Central_Player_Local, true, object)
 else
 Central_IOR_EntDraw(false, Central_Player_Local, true, object)
 end
 end
 if (Central_ImprovedTable.vehicle["enable"] == 1 and Central_ObjClass == "prop_vehicle_jeep" and object:IsVehicle()) then
-if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_ImprovedTable.vehicle["vehicle"] * Central_Distance_Multiplicateur then
+if Central_IOR_CalculDist(Central_Player_Local, object, Central_ImprovedTable.vehicle["vehicle"], Central_Distance_Multiplicateur) then
 Central_IOR_EntDraw(true, Central_Player_Local, true, object)
 else
 Central_IOR_EntDraw(false, Central_Player_Local, true, object)
 end
 end
-if (Central_ImprovedTable.object["enable"] == 1 and Central_ObjClass == "prop_physics" and IsEntity(object)) then 
+if (Central_ImprovedTable.object["enable"] == 1 and Central_ObjClass == "prop_physics") then 
 if (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb6) then continue end      
-if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_ImprovedTable.object["object"] * Central_Distance_Multiplicateur then
+if Central_IOR_CalculDist(Central_Player_Local, object, Central_ImprovedTable.object["object"], Central_Distance_Multiplicateur) then
 Central_IOR_EntDraw(false, Central_Player_Local, false, object)
 else
 Central_IOR_EntDraw(false, Central_Player_Local, true, object)
 end
 end	
 if (Central_ImprovedTable.player["enable"] == 1 and Central_ObjClass == "player" and object:IsPlayer()) then
+if Central_IOR_CalculDist(Central_Player_Local, object, Central_ImprovedTable.player["player"], Central_Distance_Multiplicateur) then
 if (!IsValid(object:GetMoveParent()) and object:GetObserverTarget():IsRagdoll() and !object:GetSpawnEffect()) then 
 if IsValid(object:GetActiveWeapon()) then
 Central_IOR_EntDrawBool(object:GetActiveWeapon(), true)
@@ -118,12 +121,11 @@ continue
 end
 if (Central_IOR_CheckAdmin(object)) then 
 Central_IOR_EntDrawBool(object, true)
-else 
-if Central_Player_Local:GetPos():Distance(object:GetPos()) <= Central_ImprovedTable.player["player"] * Central_Distance_Multiplicateur then
+else
 Central_IOR_EntDraw(true, Central_Player_Local, true, object)
+end
 else
 Central_IOR_EntDraw(false, Central_Player_Local, true, object)
-end
 end
 end
 end
@@ -176,6 +178,7 @@ end
 if (Central__Debug) then
 Central_IOR_Synchro_Data()
 end 
+Central_Dev_Creator, Central_Dev_Version  = util.Base64Decode( Central_Dev_Creator ), util.Base64Decode( Central_Dev_Version )
 
 local function Central_IOR_EXT(Central_IOR_DM)
 Central_IOR_ClientTable = nil
@@ -186,10 +189,10 @@ net.SendToServer()
 if IsValid(Central_IOR_DM) then 
 Central_IOR_DM:Remove()
 end
-end
+end 
 
 local function Central_IOR_Panel()
-if (Central_ForceDisabled) then chat.AddText( white,"Improved Object Render : ", white, Central_Table_IOR.Language["phrase17"] ) Central_IOR_EXT() return end
+if (Central_ForceDisabled) then chat.AddText( "Improved Object Render : " ..Central_Table_IOR.Language["phrase17"] ) Central_IOR_EXT() return end
 local Central_Frame_ICN, Central_Frame_ICN_1, Central_Frame_ICN_2, Central_Frame_ICN_3, Central_Frame_ICN_4, Central_Frame_ICN_Font = "icon16/cog.png", "icon16/bullet_wrench.png", "icon16/cross.png", "icon16/bullet_green.png", "icon16/bullet_red.png", "Default"
 
 local Central_IOR_ClientTable = Central_ImprovedTable
@@ -197,7 +200,6 @@ local Central_IOR_ClientTableChange = table.Copy( Central_IOR_ClientTable )
 local Central_IOR_PanelColor = {[1] = Color( 255, 255, 255, 255 ),[2] = Color( 255, 0, 0, 250 ),[3] = Color( 0, 0, 0, 255 ),[4] = Color(0,69,175,250),[5] = Color(255, 255, 255, 245),[6] = Color(0,50,175,240),[7] = Color(0,69,165,250)}
 local Central_IOR_Enable, Central_IOR_EnableColor = "Off", Central_IOR_PanelColor[2]
 if (Central_CheckData) then Central_IOR_Enable = "On" Central_IOR_EnableColor = Color( 0, 105, 20, 255 ) end
-
 
 local Central_IOR_Frame = vgui.Create( "DFrame" )
 local Central_IOR_Slider_1 = vgui.Create( "DNumSlider", Central_IOR_Frame )

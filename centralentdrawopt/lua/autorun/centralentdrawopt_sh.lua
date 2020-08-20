@@ -7,8 +7,6 @@
 Central_Table_IOR = {}
 
 if (SERVER) then 
---- This table will be added in case there is no data file.(You can change it if you want to delete your data folder and retrieve your setting.)
---- Change only if you understand what you're doing.
 Central_Table_IOR.CentralDistanceGeneralDefaultT = {
 general = {
 ["enable"] = 1, --- If Enabled/Disabled.(Enabled = 1, Disabled = 0)
@@ -28,15 +26,17 @@ object = {
 }
 }
 
+---------------------- Language ----------------------
 Central_Table_IOR.Language_Server = {
 ["phrase1"] = "[Improved Object Render] Success ! Data Loaded !\n",
 ["phrase2"] = "[Improved Object Render] Creating Data, please wait..\n",
 ["phrase3"] = "[Improved Object Render] Loading Data..\n",
 }
+----------------------
 end
 
 if (CLIENT) then
---- I will be coding an better language system soon, for the moment change all sentences below.
+---------------------- Language ----------------------
 Central_Table_IOR.Language = {
 ["phrase1"] = "Settings panel for Improved Object Render",
 ["phrase2"] = "All data are automatically synchronized \n with players connected !",
@@ -56,6 +56,7 @@ Central_Table_IOR.Language = {
 ["phrase16"] = "Enable all module",
 ["phrase17"] = "Loading data... please open the panel in a few seconds.",
 }
+----------------------
 end
 
 function widgets.RenderMe() end
