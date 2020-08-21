@@ -5,7 +5,7 @@
 ------------- www.centralcityrp.fr/ --- Affiliated Website 
 ------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
 ------ *Do not touch below or you may break the code
-local Central_Degrees_Pi, Central_Distance_Multiplicateur, Central_Distance_NoDraw, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Player_Local = 300, 7000, 5, {}, "Central_EntOptimisation"
+local Central_Degrees_Pi, Central_Distance_Multiplicateur, Central_Distance_NoDraw, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Player_Local = 300, 10000, 1, {}, "Central_EntOptimisation"
 local Central_ForceDisabled, Central_IOR_TimerG, Central_Distance_TimerLoad_1, Central_CheckData, Central__Debug, Central_Dev_Creator, Central_Dev_Version = false, 0.3, "Central_IORDataSync", false, false, "SW5qMw==", "djIuMA=="
 if (!Central__Debug) then local Central_ImprovedTable end
 local Central_IOR_TableNb = {["CentralObjectNb1"] = 20,["CentralObjectNb2"] = 0,["CentralObjectNb3"] = 16,["CentralObjectNb4"] = 3,["CentralObjectNb5"] = 9,["CentralObjectNb6"] = 4,["CentralObjectNb7"] = 8,["CentralObjectNb8"] = 132,}
