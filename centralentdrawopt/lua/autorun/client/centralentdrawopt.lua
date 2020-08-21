@@ -8,7 +8,6 @@
 local Central_Degrees_Pi, Central_Distance_Multiplicateur, Central_Distance_NoDraw, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Player_Local = 300, 7000, 5, {}, "Central_EntOptimisation"
 local Central_ForceDisabled, Central_IOR_TimerG, Central_Distance_TimerLoad_1, Central_CheckData, Central__Debug, Central_Dev_Creator, Central_Dev_Version = false, 0.3, "Central_IORDataSync", false, false, "SW5qMw==", "djIuMA=="
 if (!Central__Debug) then local Central_ImprovedTable end
-local Central_IOR_Module = {[1] = "general",[2] = "vehicle",[3] = "player",[4] = "object",}
 local Central_IOR_TableNb = {["CentralObjectNb1"] = 20,["CentralObjectNb2"] = 0,["CentralObjectNb3"] = 16,["CentralObjectNb4"] = 3,["CentralObjectNb5"] = 9,["CentralObjectNb6"] = 4,["CentralObjectNb7"] = 8,["CentralObjectNb8"] = 132,}
 local Central_IOR_Table = {
 ["WhiteList"] = {["prop_vehicle_jeep"] = true,["prop_physics"] = true,["player"] = true,},
@@ -193,6 +192,7 @@ end
 
 local function Central_IOR_Panel()
 if (Central_ForceDisabled) then chat.AddText( "Improved Object Render : " ..Central_Table_IOR.Language["phrase17"] ) Central_IOR_EXT() return end
+local Central_IOR_Module = {[1] = "general",[2] = "vehicle",[3] = "player",[4] = "object",}
 local Central_Frame_ICN, Central_Frame_ICN_1, Central_Frame_ICN_2, Central_Frame_ICN_3, Central_Frame_ICN_4, Central_Frame_ICN_Font = "icon16/cog.png", "icon16/bullet_wrench.png", "icon16/cross.png", "icon16/bullet_green.png", "icon16/bullet_red.png", "Default"
 
 local Central_IOR_ClientTable = Central_ImprovedTable
