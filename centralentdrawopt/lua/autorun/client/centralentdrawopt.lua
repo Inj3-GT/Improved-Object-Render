@@ -45,7 +45,7 @@ end
 end
 
 local function Central_IOR_EntDraw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
-if (Central_IOR_EntAllVerif(Central_Player) or Central_IOR_EntAllVerif(Central_Player, true)) or ((FSpectate) and FSpectate.getSpecEnt() != nil) then return Central_IOR_EntDrawBool(Central_Val, false) end
+if (Central_IOR_EntAllVerif(Central_Player, true) or ((FSpectate) and FSpectate.getSpecEnt() != nil)) then return Central_IOR_EntDrawBool(Central_Val, false) end
 if (Central_DrawBL) then
 if Central_IOR_CalculDist(Central_Player, Central_Val, Central_Distance_NoDraw) then return Central_IOR_EntDrawBool(Central_Val, false) end
 if (Central_Bool) then
