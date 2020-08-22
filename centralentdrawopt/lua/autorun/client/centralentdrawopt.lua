@@ -86,10 +86,10 @@ end
 if (Central_ForceDisabled) then Central_IOR_EntDrawBool(object, false) continue end
 if (Central_ImprovedTable.general["enable"] == 1 and !Central_IOR_Table.WhiteList[Central_ObjClass]) then
 if Central_IOR_SentObject(object)[object] then continue end
-if Central_IOR_CalculDist(Central_Player_Local, object, Central_ImprovedTable.general["general"]) then
 if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb2) or (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb4 and !object:GetSpawnEffect())) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb2 and object:GetRenderGroup() == Central_IOR_TableNb.CentralObjectNb5) or (object:IsWeapon() and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb8)) then
 continue 
-end
+end         
+if Central_IOR_CalculDist(Central_Player_Local, object, Central_ImprovedTable.general["general"]) then
 Central_IOR_EntDraw(true, Central_Player_Local, true, object)
 else
 Central_IOR_EntDraw(false, Central_Player_Local, true, object)
