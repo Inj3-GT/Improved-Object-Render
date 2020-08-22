@@ -5,7 +5,7 @@
 ------------- www.centralcityrp.fr/ --- Affiliated Website 
 ------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
 ------ *Do not touch below or you may break the code
-local Central_Degrees_Pi, Central_Distance_Multiplicateur, Central_Distance_NoDraw, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Player_Local = 300, 10000, 1, {}, "Central_EntOptimisation"
+local Central_Degrees_Pi, Central_Distance_Multiplicateur, Central_Distance_NoDraw, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Player_Local = 300, 25000, 0.8, {}, "Central_EntOptimisation"
 local Central_ForceDisabled, Central_IOR_TimerG, Central_Distance_TimerLoad_1, Central_CheckData, Central__Debug, Central_Dev_Creator, Central_Dev_Version = false, 0.3, "Central_IORDataSync", false, false, "SW5qMw==", "djIuMA=="
 if (!Central__Debug) then local Central_ImprovedTable end
 local Central_IOR_TableNb = {["CentralObjectNb1"] = 20,["CentralObjectNb2"] = 0,["CentralObjectNb3"] = 16,["CentralObjectNb4"] = 3,["CentralObjectNb5"] = 9,["CentralObjectNb6"] = 4,["CentralObjectNb7"] = 8,["CentralObjectNb8"] = 132,}
@@ -201,6 +201,19 @@ local Central_IOR_PanelColor = {[1] = Color( 255, 255, 255, 255 ),[2] = Color( 2
 local Central_IOR_Enable, Central_IOR_EnableColor, Central_IOR_MinSld, Central_IOR_MaxSld = "Off", Central_IOR_PanelColor[2], 105, 5000 
 if (Central_CheckData) then Central_IOR_Enable = "On" Central_IOR_EnableColor = Color( 0, 105, 20, 255 ) end
 
+local function Central_DrawPanelCol(self, w , h, col, col1, ColorD)
+if !IsValid(self) then return end
+local Central_IOR_RD = math.abs(math.sin(CurTime() * 3) * 255)
+if (col == 255) then 
+col = Central_IOR_RD
+elseif (col1 == 255) then
+col1 = Central_IOR_RD
+end
+local Central_IOR_RD_A = Color(col, col1, 0)
+draw.RoundedBox( 6, 3, 0, w-4, h, Central_IOR_RD_A )
+draw.RoundedBox( 6, 2, 1, w-2, h-2, ColorD )
+end
+
 local Central_IOR_Frame = vgui.Create( "DFrame" )
 local Central_IOR_Slider_1 = vgui.Create( "DNumSlider", Central_IOR_Frame )
 local Central_IOR_Slider_2 = vgui.Create( "DNumSlider", Central_IOR_Frame )
@@ -331,10 +344,7 @@ Central_IOR_X1:SetSize( 145, 23 )
 Central_IOR_X1:SetText( "" )
 Central_IOR_X1:SetImage( Central_Frame_ICN_1 )	
 Central_IOR_X1.Paint = function( self, w, h )	
-local Central_IOR_VT = math.abs(math.sin(CurTime() * 3) * 255)
-local Central_IOR_VT_A = Color(0, Central_IOR_VT, 0)
-draw.RoundedBox( 6, 3, 0, w-4, h, Central_IOR_VT_A )
-draw.RoundedBox( 6, 2, 1, w-2, h-2, Central_IOR_PanelColor[4] )
+Central_DrawPanelCol(self, w, h, 0, 255, Central_IOR_PanelColor[4])
 draw.DrawText( Central_Table_IOR.Language["phrase8"], Central_Frame_ICN_Font, w/2+7,5, Central_IOR_PanelColor[1], TEXT_ALIGN_CENTER )
 end
 Central_IOR_X1.DoClick = function() 
@@ -351,10 +361,7 @@ Central_IOR_X2:SetSize( 90, 23 )
 Central_IOR_X2:SetText( "" ) 
 Central_IOR_X2:SetImage( Central_Frame_ICN_2 )
 function Central_IOR_X2:Paint( w, h )
-local Central_IOR_RD = math.abs(math.sin(CurTime() * 3) * 255)
-local Central_IOR_RD_A = Color(Central_IOR_RD, 0, 0)
-draw.RoundedBox( 6, 3, 0, w-4, h, Central_IOR_RD_A )
-draw.RoundedBox( 6, 2, 1, w-2, h-2, Central_IOR_PanelColor[4] )
+Central_DrawPanelCol(self, w, h, 255, 0, Central_IOR_PanelColor[4])
 draw.DrawText( Central_Table_IOR.Language["phrase13"], Central_Frame_ICN_Font, w/2+6,5, Central_IOR_PanelColor[1], TEXT_ALIGN_CENTER )
 end
 Central_IOR_X2.DoClick = function()
@@ -370,10 +377,7 @@ else
 Central_IOR_X3:SetImage( Central_Frame_ICN_4 )
 end
 function Central_IOR_X3:Paint( w, h )
-local Central_IOR_RD = math.abs(math.sin(CurTime() * 3) * 255)
-local Central_IOR_RD_A = Color(Central_IOR_RD, 0, 0)
-draw.RoundedBox( 6, 3, 0, w-4, h, Central_IOR_RD_A )
-draw.RoundedBox( 6, 2, 1, w-2, h-2, Central_IOR_PanelColor[4] )
+Central_DrawPanelCol(self, w, h, 255, 0, Central_IOR_PanelColor[4])
 if Central_IOR_Enable == "On" then
 draw.DrawText( Central_Table_IOR.Language["phrase15"], Central_Frame_ICN_Font, w/2+6,5, Central_IOR_PanelColor[1], TEXT_ALIGN_CENTER )
 else
