@@ -86,10 +86,10 @@ end
 if (Central_ForceDisabled) then Central_IOR_EntDrawBool(object, false) continue end
 if (Central_ImprovedTable.general["enable"] == 1 and !Central_IOR_Table.WhiteList[Central_ObjClass]) then
 if Central_IOR_SentObject(object)[object] then continue end
-if (((object:IsNPC() or object.Type == "nextbot") and (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb2) or (object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb4 and !object:GetSpawnEffect())) or (Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb2 and object:GetRenderGroup() == Central_IOR_TableNb.CentralObjectNb5) or (object:IsWeapon() and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb8)) then
-continue 
-end         
+if object:IsWeapon() and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb8 then continue end    
+if Central_ObjClass == "prop_dynamic" and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb2 and object:GetRenderGroup() == Central_IOR_TableNb.CentralObjectNb5 then continue end
 if Central_IOR_CalculDist(Central_Player_Local, object, Central_ImprovedTable.general["general"]) then
+if (object:IsNPC() or object.Type == "nextbot") and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb1 and object:GetMoveType()  == Central_IOR_TableNb.CentralObjectNb2 then continue end    
 Central_IOR_EntDraw(true, Central_Player_Local, true, object)
 else
 Central_IOR_EntDraw(false, Central_Player_Local, true, object)
@@ -198,7 +198,7 @@ local Central_Frame_ICN, Central_Frame_ICN_1, Central_Frame_ICN_2, Central_Frame
 local Central_IOR_ClientTable = Central_ImprovedTable
 local Central_IOR_ClientTableChange = table.Copy( Central_IOR_ClientTable )
 local Central_IOR_PanelColor = {[1] = Color( 255, 255, 255, 255 ),[2] = Color( 255, 0, 0, 250 ),[3] = Color( 0, 0, 0, 255 ),[4] = Color(0,69,175,250),[5] = Color(255, 255, 255, 245),[6] = Color(0,50,175,240),[7] = Color(0,69,165,250)}
-local Central_IOR_Enable, Central_IOR_EnableColor, Central_IOR_MinSld, Central_IOR_MaxSld = "Off", Central_IOR_PanelColor[2], 105, 5000 
+local Central_IOR_Enable, Central_IOR_EnableColor, Central_IOR_MinSld, Central_IOR_MaxSld = "Off", Central_IOR_PanelColor[2], 20, 5000 
 if (Central_CheckData) then Central_IOR_Enable = "On" Central_IOR_EnableColor = Color( 0, 105, 20, 255 ) end
 
 local function Central_DrawPanelCol(self, w , h, col, col1, ColorD)

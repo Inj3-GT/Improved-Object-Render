@@ -10,15 +10,15 @@ if (SERVER) then
 Central_Table_IOR.CentralDistanceGeneralDefaultT = {
 general = {
 ["enable"] = 1, --- If Enabled/Disabled.(Enabled = 1, Disabled = 0)
-["general"] = 1000, --- Maximum distance before no longer rendering objects.
+["general"] = 500, --- Maximum distance before no longer rendering objects.
 },
 vehicle = {
 ["enable"] = 1,
-["vehicle"] = 1100,
+["vehicle"] = 1000,
 },
 player = {
 ["enable"] = 1,
-["player"] = 1400,
+["player"] = 1100,
 },
 object = {
 ["enable"] = 1,
