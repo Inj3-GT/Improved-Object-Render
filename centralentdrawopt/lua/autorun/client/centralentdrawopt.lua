@@ -5,7 +5,7 @@
 ------------- www.centralcityrp.fr/ --- Affiliated Website 
 ------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
 ------ *Do not touch below or you may break the code
-local Central_Degrees_Pi, Central_Distance_Multiplicateur, Central_Distance_NoDraw, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Player_Local = 300, 25000, 0.8, {}, "Central_EntOptimisation"
+local Central_Degrees_Pi, Central_Distance_Multiplicateur, Central_Distance_NoDraw, CentralTableVehiculeSent, Central_Distance_TimerLoad, Central_Player_Local = 300, 25000, 5, {}, "Central_EntOptimisation"
 local Central_ForceDisabled, Central_IOR_TimerG, Central_Distance_TimerLoad_1, Central_CheckData, Central__Debug, Central_Dev_Creator, Central_Dev_Version = false, 0.3, "Central_IORDataSync", false, false, "SW5qMw==", "djIuMA=="
 if (!Central__Debug) then local Central_ImprovedTable end
 local Central_IOR_TableNb = {["CentralObjectNb1"] = 20,["CentralObjectNb2"] = 0,["CentralObjectNb3"] = 16,["CentralObjectNb4"] = 3,["CentralObjectNb5"] = 9,["CentralObjectNb6"] = 4,["CentralObjectNb7"] = 8,["CentralObjectNb8"] = 132,}
@@ -17,54 +17,26 @@ local Central_IOR_Table = {
 } 
 local math = math
 
-local function Central_IOR_CalculDist(player, object, distobj)
-return player:GetPos():DistToSqr(object:GetPos()) < (distobj * Central_Distance_Multiplicateur)
+local function Central_IOR_CalculDist(Central_Player, Central_Val, Central_distobj)
+return Central_Player:GetPos():DistToSqr(Central_Val:GetPos()) < (Central_distobj * Central_Distance_Multiplicateur)
 end
 
-local function Central_IOR_EntAllVerif(Central_VerifPlayer, Bool)
-if (Bool) then
-if (IsValid(Central_VerifPlayer:GetActiveWeapon()) and Central_IOR_Table.Weapons[Central_VerifPlayer:GetActiveWeapon():GetClass()]) or (Central_VerifPlayer:GetViewEntity():GetClass() != "player") then
+local function Central_IOR_EntAllVerif(Central_Player, Central_Bool)
+if Central_Bool then
+if IsValid(Central_Player:GetActiveWeapon()) and Central_IOR_Table.Weapons[Central_Player:GetActiveWeapon():GetClass()] or Central_Player:GetViewEntity():GetClass() != "player" then
 return true
 end
-return false
 else
-if ((Central_VerifPlayer:GetMoveType() == Central_IOR_TableNb.CentralObjectNb7 and Central_VerifPlayer:GetNoDraw() == true and !Central_VerifPlayer:InVehicle()) or ((FAdmin) and Central_VerifPlayer:FAdmin_GetGlobal("FAdmin_cloaked"))) then  
+if Central_Player:GetMoveType() == Central_IOR_TableNb.CentralObjectNb7 and Central_Player:GetNoDraw() == true and !Central_Player:InVehicle() or ((FAdmin) and Central_Player:FAdmin_GetGlobal("FAdmin_cloaked")) then  
 return true 
 end
+end
 return false
 end
-end
 
-local function Central_IOR_EntDrawBool(Central_Val_Bool, Bool)
-if (Bool) then
-Central_Val_Bool:SetNoDraw(true) --- Objects should not render at all.
-else
-Central_Val_Bool:SetNoDraw(false) 
-end
-end
-
-local function Central_IOR_EntDraw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
-if (Central_IOR_EntAllVerif(Central_Player, true) or ((FSpectate) and FSpectate.getSpecEnt() != nil)) then return Central_IOR_EntDrawBool(Central_Val, false) end
-if (Central_DrawBL) then
-if Central_IOR_CalculDist(Central_Player, Central_Val, Central_Distance_NoDraw) then return Central_IOR_EntDrawBool(Central_Val, false) end
-if (Central_Bool) then
-local Central_Aim_Vector = Central_Player:GetAimVector()
-local Central_Ent_Vector = Central_Val:GetPos() - Central_Player:GetEyeTrace().StartPos 
-local Central_Lenght_Dot = Central_Ent_Vector:Length() 
-local Central_AimEnt_Vector = Central_Aim_Vector:Dot( Central_Ent_Vector ) / Central_Lenght_Dot
-local Central_Direct_Ang = math.pi / Central_Degrees_Pi
-local Central_IOR_Inf = Central_AimEnt_Vector < Central_Direct_Ang
-if (Central_IOR_Inf) then
-return Central_IOR_EntDrawBool(Central_Val, true) 
-end
-end
-return Central_IOR_EntDrawBool(Central_Val, false) 
-else
-if (Central_Bool) then
-return Central_IOR_EntDrawBool(Central_Val, true) 
-end
-return Central_IOR_EntDrawBool(Central_Val, false) 
-end
+local function Central_IOR_EntDrawBool(Central_Val, Central_Bool)
+if Central_Bool then Central_Val:SetNoDraw(true) return end --- Objects should not render at all.
+Central_Val:SetNoDraw(false) 
 end
 
 local function Central_IOR_SentObject(object)
@@ -76,6 +48,29 @@ end
 return CentralTableVehiculeSent
 end
 
+local function Central_IOR_EntDraw(Central_DrawBL, Central_Player, Central_Bool, Central_Val)
+if Central_IOR_EntAllVerif(Central_Player, true) or Central_IOR_EntAllVerif(Central_Player) or ((FSpectate) and FSpectate.getSpecEnt() != nil) then return Central_IOR_EntDrawBool(Central_Val, false) end
+if Central_DrawBL then
+if Central_IOR_CalculDist(Central_Player, Central_Val, Central_Distance_NoDraw) then return Central_IOR_EntDrawBool(Central_Val, false) end
+if Central_Bool then
+local Central_Aim_Vector = Central_Player:GetAimVector()
+local Central_Ent_Vector = Central_Val:GetPos() - Central_Player:GetEyeTrace().StartPos 
+local Central_Lenght_Dot = Central_Ent_Vector:Length() 
+local Central_AimEnt_Vector = Central_Aim_Vector:Dot( Central_Ent_Vector ) / Central_Lenght_Dot
+local Central_Direct_Ang = math.pi / Central_Degrees_Pi
+local Central_IOR_Inf = Central_AimEnt_Vector < Central_Direct_Ang
+if Central_IOR_Inf then
+return Central_IOR_EntDrawBool(Central_Val, true) 
+end
+end
+else
+if Central_Bool then
+return Central_IOR_EntDrawBool(Central_Val, true) 
+end
+end
+return Central_IOR_EntDrawBool(Central_Val, false) 
+end
+
 local function Central_IOR_EntDrawOptimisation()
 local Central_Player_VGet = Central_Player_Local:GetVehicle()
 for _, object in pairs( ents.FindByClass( "*" ) ) do
@@ -83,7 +78,7 @@ local Central_ObjClass = object:GetClass()
 if (Central_IOR_Table.BlackList[Central_ObjClass] or object == Central_Player_Local or object == Central_Player_VGet) then 
 continue
 end
-if (Central_ForceDisabled) then Central_IOR_EntDrawBool(object, false) continue end
+if Central_ForceDisabled then Central_IOR_EntDrawBool(object, false) continue end
 if (Central_ImprovedTable.general["enable"] == 1 and !Central_IOR_Table.WhiteList[Central_ObjClass]) then
 if Central_IOR_SentObject(object)[object] then continue end
 if object:IsWeapon() and object:GetSolidFlags() == Central_IOR_TableNb.CentralObjectNb8 then continue end    
@@ -140,7 +135,7 @@ Central_CheckData = true
 break
 end
 end
-if (Central_CheckData) then
+if Central_CheckData then
 if !timer.Exists(Central_Distance_TimerLoad) then
 timer.Create(Central_Distance_TimerLoad, Central_IOR_TimerG, 0, Central_IOR_EntDrawOptimisation ) 
 end
@@ -158,7 +153,7 @@ local Central_IOR_ReadData = net.ReadData( Central_IOR_ReadInt )
 local Central_ReadBool = net.ReadBool()
 local Central_IOR_Decompress = util.Decompress( Central_IOR_ReadData, Central_IOR_ReadInt)
 Central_Player_Local = LocalPlayer()
-if (Central_ReadBool) then
+if Central_ReadBool then
 Central_ForceDisabled = true
 timer.Create(Central_Distance_TimerLoad_1, Central_IOR_TimerG + 0.1, 1,function()
 Central_ForceDisabled = false
@@ -167,14 +162,14 @@ Central_Verif_Data()
 end)
 return
 end
-if (Central__Debug) then
+if Central__Debug then
 timer.Remove(Central_Distance_TimerLoad)
 else
 Central_ImprovedTable = util.JSONToTable( Central_IOR_Decompress )
 Central_Verif_Data()
 end
 end
-if (Central__Debug) then
+if Central__Debug then
 Central_IOR_Synchro_Data()
 end 
 Central_Dev_Creator, Central_Dev_Version  = util.Base64Decode( Central_Dev_Creator ), util.Base64Decode( Central_Dev_Version )

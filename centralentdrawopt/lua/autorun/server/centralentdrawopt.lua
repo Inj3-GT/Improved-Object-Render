@@ -78,7 +78,7 @@ if (!Central_IOR_FileExists()) then
 file.CreateDir(Central_Ior_Sauvegarde)
 end
 local Central_IOR_UtiLJson = util.TableToJSON(table)
-file.Write(Central_Ior_Sauvegarde.. "/sv.txt", Central_IOR_UtiLJson ) 
+file.Write(Central_Ior_Sauvegarde.. "/sv[1].txt", Central_IOR_UtiLJson ) 
 if (simple == 1) then
 Central_IOR_BroadcastFunc(Central_IOR_UtiLJson, 1)
 if (IsValid(player)) then
@@ -92,7 +92,7 @@ Central_IOR_UtiLJson = nil
 end
 
 local function Central_IOR_ChargeData()
-local Central_IOR_LoadInit = util.JSONToTable(file.Read(Central_Ior_Sauvegarde.. "/sv.txt", "DATA"))
+local Central_IOR_LoadInit = util.JSONToTable(file.Read(Central_Ior_Sauvegarde.. "/sv[1].txt", "DATA"))
 Central_Table_Update  = Central_IOR_LoadInit
 MsgC( Central_Ior_CacheColor2, Central_Table_IOR.Language_Server["phrase1"] )
 Central_IOR_LoadInit = nil
@@ -102,7 +102,7 @@ hook.Add("Initialize","Central_IOR_initTable",function()
 if (!Central_IOR_FileExists()) then 
 file.CreateDir(Central_Ior_Sauvegarde)
 end
-if (!Central_IOR_FileExists("/sv.txt")) then
+if (!Central_IOR_FileExists("/sv[1].txt")) then
 MsgC( Central_Ior_CacheColor, Central_Table_IOR.Language_Server["phrase2"] )
 Central_IOR_SauvegardeData(Central_Table_IOR.CentralDistanceGeneralDefaultT, 0)
 else
@@ -114,10 +114,7 @@ end)
 local function Central_IOR_Init(ply)
 timer.Simple(7, function()
 if !IsValid(ply) then return end
-local Central_Tbl_Init = Central_Table_Update
-if (Central_Tbl_Init == nil) then
-Central_Tbl_Init = Central_Table_IOR.CentralDistanceGeneralDefaultT
-end
+local Central_Tbl_Init = Central_Table_Update or Central_Table_IOR.CentralDistanceGeneralDefaultT
 Central_IOR_BroadcastFunc(Central_Tbl_Init, 0, ply)
 end)
 end
