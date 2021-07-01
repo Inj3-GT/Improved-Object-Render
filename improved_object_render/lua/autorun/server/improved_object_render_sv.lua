@@ -55,8 +55,8 @@ if not Ipr_Render_FileExist("/sv[2].txt") then
 
      local Ipr_Render_DefaultTbl = {
           worldspawn = {
-               ["enable"] = true, --- If Enabled/Disabled.(Enabled = 1, Disabled = 0)
-               ["distance"] = 500, --- Maximum distance before no longer rendering objects.
+               ["enable"] = true,
+               ["distance"] = 500,
           },
           vehicle = { 
                ["enable"] = true,
