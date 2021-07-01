@@ -7,7 +7,7 @@
 ------ *Do not touch below or you may break the code
 
 local Ipr_RenderTbl = Ipr_RenderTbl or false   
-local Central_ForceDisabled = Central_ForceDisabled or false
+local Ipr_ForceDisabled = Ipr_ForceDisabled or false
 local Ipr_Frame = Ipr_Frame or nil
 
 local function Ipr_Rendering_CalcDist(player, target, dist)
@@ -15,7 +15,7 @@ local function Ipr_Rendering_CalcDist(player, target, dist)
 end
 
 local function Ipr_Rendering_Object(bool, ply, val)
-     if (FSpectate) and FSpectate.getSpecEnt() ~= nil or Central_ForceDisabled or ply:GetNoDraw() then
+     if (FSpectate) and FSpectate.getSpecEnt() ~= nil or Ipr_ForceDisabled or ply:GetNoDraw() then
           val:SetNoDraw(false)
           return
      end
@@ -117,7 +117,7 @@ local function Ipr_Sync_Data()
 
      Ipr_RenderTbl = util.JSONToTable(Ipr_Decomp)
      local Ipr_RenderTbl_Old = table.Copy(Ipr_RenderTbl)
-     Central_ForceDisabled = true
+     Ipr_ForceDisabled = true
 
      local Ipr_Data = false
      for _, data in pairs(Ipr_RenderTbl) do
@@ -136,7 +136,7 @@ local function Ipr_Sync_Data()
      end
 
      timer.Create("Central_IORDataSync", 0.5, 1,function()
-     Central_ForceDisabled = false
+     Ipr_ForceDisabled = false
 
      if not Ipr_Data then
           if timer.Exists("Central_EntOptimisation") then
