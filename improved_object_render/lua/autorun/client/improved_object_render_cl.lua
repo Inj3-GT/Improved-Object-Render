@@ -128,19 +128,19 @@ local function Ipr_Sync_Data()
           end
      end
 
-     if timer.Exists("Central_IORDataSync") then
-          timer.Remove("Central_IORDataSync")
+     if timer.Exists("Ipr_Sys_ObjRender_Sync") then
+          timer.Remove("Ipr_Sys_ObjRender_Sync")
      end
      if Ipr_Data then
-          timer.Create("Central_EntOptimisation", 0.3, 0, Ipr_Rendering_Ent)
+          timer.Create("Ipr_Sys_ObjRender", 0.3, 0, Ipr_Rendering_Ent)
      end
 
-     timer.Create("Central_IORDataSync", 0.5, 1,function()
+     timer.Create("Ipr_Sys_ObjRender_Sync", 0.5, 1,function()
      Ipr_ForceDisabled = false
 
      if not Ipr_Data then
-          if timer.Exists("Central_EntOptimisation") then
-               timer.Remove("Central_EntOptimisation")
+          if timer.Exists("Ipr_Sys_ObjRender") then
+               timer.Remove("Ipr_Sys_ObjRender")
           end
      end
      Ipr_RenderTbl = Ipr_RenderTbl_Old
