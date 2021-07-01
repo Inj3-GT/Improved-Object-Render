@@ -37,18 +37,18 @@ local function Ipr_Rendering_Object(bool, ply, val)
 end
  
 local function Ipr_Rendering_Ent()
-     local Improved_Render_Sys_Npc = ents.FindByClass("npc_*")
-     local Improved_Render_Sys_Radgoll = ents.FindByClass("class C_ClientRagdoll")
-     local Improved_Render_Sys_SpawnedWeap = ents.FindByClass("spawned_weapon")
-     local Improved_Render_Sys_Veh = ents.FindByClass("prop_vehicle_jeep")
-     local Improved_Render_Sys_Ply = ents.FindByClass("player")
-     local Improved_Render_Sys_Props = ents.FindByClass("prop_physics")
+     local Ipr_Sys_Npc = ents.FindByClass("npc_*")
+     local Ipr_Sys_Radgoll = ents.FindByClass("class C_ClientRagdoll")
+     local Ipr_Sys_SpawnedWeap = ents.FindByClass("spawned_weapon")
+     local Ipr_Sys_Veh = ents.FindByClass("prop_vehicle_jeep")
+     local Ipr_Sys_Ply = ents.FindByClass("player")
+     local Ipr_Sys_Props = ents.FindByClass("prop_physics")
 
      local Ipr_LocalPlayer = LocalPlayer()
      local Ipr_GetVeh = Ipr_LocalPlayer:GetVehicle()
 
      if Ipr_RenderTbl.worldspawn.enable then
-          for _, object in ipairs(Improved_Render_Sys_Npc) do
+          for _, object in ipairs(Ipr_Sys_Npc) do
                if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, object, Ipr_RenderTbl.worldspawn.distance) then
                     if ((object:IsNPC() or object.Type == "nextbot") and object:GetSolidFlags() == 20 and object:GetMoveType() == 0) then
                          continue
@@ -58,14 +58,14 @@ local function Ipr_Rendering_Ent()
                     Ipr_Rendering_Object(false, Ipr_LocalPlayer, object)
                end
           end
-          for _, object in ipairs(Improved_Render_Sys_SpawnedWeap) do
+          for _, object in ipairs(Ipr_Sys_SpawnedWeap) do
                if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, object, Ipr_RenderTbl.worldspawn.distance) then
                     Ipr_Rendering_Object(true, Ipr_LocalPlayer, object)
                else
                     Ipr_Rendering_Object(false, Ipr_LocalPlayer, object)
                end
           end
-          for _, object in ipairs(Improved_Render_Sys_Radgoll) do
+          for _, object in ipairs(Ipr_Sys_Radgoll) do
                if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, object, Ipr_RenderTbl.worldspawn.distance) then
                     Ipr_Rendering_Object(true, Ipr_LocalPlayer, object)
                else
@@ -74,7 +74,7 @@ local function Ipr_Rendering_Ent()
           end
      end
      if Ipr_RenderTbl.vehicle.enable then
-          for _, object in ipairs(Improved_Render_Sys_Veh) do
+          for _, object in ipairs(Ipr_Sys_Veh) do
                if (object == Ipr_GetVeh) then
                     continue
                end
@@ -87,7 +87,7 @@ local function Ipr_Rendering_Ent()
           end
      end
      if Ipr_RenderTbl.player.enable then
-          for _, object in ipairs(Improved_Render_Sys_Ply) do
+          for _, object in ipairs(Ipr_Sys_Ply) do
                if (object == Ipr_LocalPlayer or object:GetNoDraw()) then
                     continue
                end
@@ -100,7 +100,7 @@ local function Ipr_Rendering_Ent()
           end
      end
      if Ipr_RenderTbl.object.enable then
-          for _, object in ipairs(Improved_Render_Sys_Props) do
+          for _, object in ipairs(Ipr_Sys_Props) do
                if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, object, Ipr_RenderTbl.object.distance) then
                     Ipr_Rendering_Object(true, Ipr_LocalPlayer, object)
                else
