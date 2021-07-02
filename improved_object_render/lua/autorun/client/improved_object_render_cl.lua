@@ -1,11 +1,7 @@
-------------- Script by Inj3, PROHIBITED to copy the code !
-------------- If you have any suggestion, contact me on my steam.
-------------- GNU General Public License v3.0
-------------- https://steamcommunity.com/id/Inj3/
-------------- www.centralcityrp.fr/ --- Affiliated Website 
-------------- https://steamcommunity.com/groups/CentralCityRoleplay --- Affiliated Group
------- *Do not touch below or you may break the code
-
+--- Script By Inj3
+--- Script By Inj3
+--- Script By Inj3
+--- https://steamcommunity.com/id/Inj3/
 local Ipr_RenderTbl = Ipr_RenderTbl or false   
 local Ipr_ForceDisabled = Ipr_ForceDisabled or false
 local Ipr_Frame = Ipr_Frame or nil
