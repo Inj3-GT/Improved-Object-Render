@@ -88,7 +88,7 @@ local function Ipr_Rendering_Ent()
      end
      if Ipr_RenderTbl.player.enable then
           for _, object in ipairs(Ipr_Sys_Ply) do
-               if (object == Ipr_LocalPlayer or object:GetNoDraw()) then
+               if (object == Ipr_LocalPlayer or object:GetNWBool("Admin_Sys_Status")) then
                     continue
                end
 
