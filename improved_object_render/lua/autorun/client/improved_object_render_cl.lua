@@ -2,6 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
+
 local Ipr_RenderTbl = Ipr_RenderTbl or false   
 local Ipr_ForceDisabled = Ipr_ForceDisabled or false
 local Ipr_Frame = Ipr_Frame or nil
