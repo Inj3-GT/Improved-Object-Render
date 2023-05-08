@@ -188,7 +188,6 @@ local Ipr_Blur = Material("pp/blurscreen")
 for _, data in pairs(Ipr_RenderTbl) do
      if (data.enable) then
           Ipr_Enable = "On"
-          
           break
      end
 end
