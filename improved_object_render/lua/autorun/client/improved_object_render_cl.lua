@@ -3,9 +3,7 @@
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
 
-local Ipr_RenderTbl = Ipr_RenderTbl or false   
-local Ipr_ForceDisabled = Ipr_ForceDisabled or false
-local Ipr_Frame = Ipr_Frame or nil
+local Ipr_RenderTbl, Ipr_ForceDisabled, Ipr_Frame  
 local Ipr_Ent_Refresh = 0.3
 local Ipr_Class = {
      "npc_*",
@@ -148,7 +146,7 @@ local function Ipr_Rendering_Ent()
 end
 
 local function Ipr_Sync_Data()
-     local Ipr_RenderTbl = net.ReadTable()
+     Ipr_RenderTbl = net.ReadTable()
      local Ipr_RenderTbl_Old = table.Copy(Ipr_RenderTbl)
      Ipr_ForceDisabled = true
 
