@@ -8,7 +8,7 @@ util.AddNetworkString("Ipr_ObjectRender_P")
 local Ipr_Save, Ipr_Cmd = "improvedobjectrender/sauvegarde", "/objectrender"
 local function Ipr_Render_FileExist(ext)
      local Ipr_Ext = Ipr_Save
-     if ext then
+     if (ext) then
           Ipr_Ext = Ipr_Save ..ext
      end
      if file.Exists(Ipr_Ext, "DATA") then
@@ -19,11 +19,8 @@ local function Ipr_Render_FileExist(ext)
 end
 
 local function Ipr_BroadFunc(tbl, bool, player)
-     local Ipr_Compress = util.Compress(tbl)
-
      net.Start("Ipr_ObjectRender_Data")
-     net.WriteUInt(#tbl, 8)
-     net.WriteData(Ipr_Compress, #Ipr_Compress)
+     net.WriteTable(tbl)
 
      if (bool) then
           net.Broadcast()
@@ -77,12 +74,14 @@ else
 end
 
 local function Ipr_Render_Cmd(ply, cmd, args)
-     if ply:IsSuperAdmin() then
-          net.Start("Ipr_ObjectRender_P")
-          net.Send(ply)
+     if not ply:IsSuperAdmin() then
+         return
      end
+ 
+     net.Start("Ipr_ObjectRender_P")
+     net.Send(ply)
 end
-concommand.Add( "objectrender", Ipr_Render_Cmd)
+concommand.Add( "objectrender", Ipr_Render_Cmd) 
 
 local function Ipr_Rcv_Data(len, ply)
      if ply:IsSuperAdmin() then
