@@ -17,7 +17,7 @@ local Ipr_Class = {
      "gmod_*",
 }
 
-local function Ipr_Rendering_CalcDist(player, target, dist)
+local function Ipr_RendDist(player, target, dist)
      return player:GetPos():DistToSqr(target:GetPos()) < (dist * 25000) or false
 end
 
@@ -31,7 +31,7 @@ local function Ipr_Update_Table()
      return ipr_t
 end 
 
-local function Ipr_Rendering_Object(bool, ply, val)
+local function Ipr_RendObj(bool, ply, val)
      if (FSpectate) and FSpectate.getSpecEnt() ~= nil or Ipr_ForceDisabled or ply:GetNoDraw() then
           val:SetNoDraw(false)
           return
@@ -63,43 +63,43 @@ local function Ipr_Rendering_Ent()
          for i = 1, #ipr_spawn_npc do
              local ipr_object = ipr_spawn_npc[i]
  
-             if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
+             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
                  if ((ipr_object:IsNPC() or ipr_object.Type == "nextbot") and ipr_object:GetSolidFlags() == 20 and ipr_object:GetMoveType() == 0) then
                      continue
                  end
-                 Ipr_Rendering_Object(true, Ipr_LocalPlayer, ipr_object)
+                 Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
              else
-                 Ipr_Rendering_Object(false, Ipr_LocalPlayer, ipr_object)
+                 Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
          local ipr_spawn_weap = Ipr_Tbl_Obj["spawned_weapon*"]
          for i = 1, #ipr_spawn_weap do
              local ipr_object = ipr_spawn_weap[i]
  
-             if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
-                 Ipr_Rendering_Object(true, Ipr_LocalPlayer, ipr_object)
+             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
+                 Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
              else
-                 Ipr_Rendering_Object(false, Ipr_LocalPlayer, ipr_object)
+                 Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
          local ipr_spawn_cragdoll = Ipr_Tbl_Obj["class C_ClientRagdoll"]
          for i = 1, #ipr_spawn_cragdoll do
              local ipr_object = ipr_spawn_cragdoll[i]
  
-             if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
-                 Ipr_Rendering_Object(true, Ipr_LocalPlayer, ipr_object)
+             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
+                 Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
              else
-                 Ipr_Rendering_Object(false, Ipr_LocalPlayer, ipr_object)
+                 Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
          local ipr_spawn_gmod_b = Ipr_Tbl_Obj["gmod_*"]
          for i = 1, #ipr_spawn_gmod_b do
              local ipr_object = ipr_spawn_gmod_b[i]
  
-             if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
-                 Ipr_Rendering_Object(true, Ipr_LocalPlayer, ipr_object)
+             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
+                 Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
              else
-                 Ipr_Rendering_Object(false, Ipr_LocalPlayer, ipr_object)
+                 Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
      end
@@ -111,10 +111,10 @@ local function Ipr_Rendering_Ent()
              if (ipr_object == Ipr_GetVeh) then
                  continue
              end
-             if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.vehicle.distance) then
-                 Ipr_Rendering_Object(true, Ipr_LocalPlayer, ipr_object)
+             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.vehicle.distance) then
+                 Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
              else
-                 Ipr_Rendering_Object(false, Ipr_LocalPlayer, ipr_object)
+                 Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
      end
@@ -126,10 +126,10 @@ local function Ipr_Rendering_Ent()
              if (ipr_object == Ipr_LocalPlayer) or ipr_object:GetNWBool("Admin_Sys_Status") then
                  continue
              end
-             if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.player.distance) then
-                 Ipr_Rendering_Object(true, Ipr_LocalPlayer, ipr_object)
+             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.player.distance) then
+                 Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
              else
-                 Ipr_Rendering_Object(false, Ipr_LocalPlayer, ipr_object)
+                 Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
      end
@@ -138,21 +138,17 @@ local function Ipr_Rendering_Ent()
          for i = 1, #ipr_spawn_prop_p do
              local ipr_object = ipr_spawn_prop_p[i]
  
-             if Ipr_Rendering_CalcDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.object.distance) then
-                 Ipr_Rendering_Object(true, Ipr_LocalPlayer, ipr_object)
+             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.object.distance) then
+                 Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
              else
-                 Ipr_Rendering_Object(false, Ipr_LocalPlayer, ipr_object)
+                 Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
      end
 end
 
 local function Ipr_Sync_Data()
-     local Ipr_ReadInt = net.ReadUInt(8)
-     local Ipr_ReadData = net.ReadData(Ipr_ReadInt)
-     local Ipr_Decomp = util.Decompress(Ipr_ReadData, Ipr_ReadInt)
-
-     Ipr_RenderTbl = util.JSONToTable(Ipr_Decomp)
+     local Ipr_RenderTbl = net.ReadTable()
      local Ipr_RenderTbl_Old = table.Copy(Ipr_RenderTbl)
      Ipr_ForceDisabled = true
 
