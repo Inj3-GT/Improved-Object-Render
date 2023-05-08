@@ -35,7 +35,7 @@ local function Ipr_SaveData(tbl, bool, player)
      file.Write(Ipr_Save.. "/sv.json", Ipr_Util)
 
      if (bool) then
-          Ipr_BroadFunc(util.JSONToTable(Ipr_Util), true)
+          Ipr_BroadFunc(tbl, true)
           player:SendLua([[chat.AddText( Color(255,0,0),"Improved Object Render : ", Color(255,255,255), "Data has been perfectly saving and is being sent to all player !" )]])
      else
           MsgC(color_white, "[Improved Object Render] Success ! Data Loaded !\n" )
@@ -107,8 +107,8 @@ hook.Add( "PlayerInitialSpawn", "Ipr_ObjectRender_Init",  function(player, trans
              return
          end
  
-         local Ipr_ReadTable = file.Read(Ipr_Save.. "/sv.json", "DATA")
-         Ipr_BroadFunc(util.JSONToTable(Ipr_ReadTable), false, player)
+         local Ipr_ReadTable = util.JSONToTable(file.Read(Ipr_Save.. "/sv.json", "DATA"))
+         Ipr_BroadFunc(Ipr_ReadTable, false, player)
      end)
 end) 
 
