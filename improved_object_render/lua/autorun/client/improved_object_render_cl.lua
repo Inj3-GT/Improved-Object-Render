@@ -154,7 +154,7 @@ local function Ipr_Sync_Data()
 
      local Ipr_Data = false
      for _, data in pairs(Ipr_RenderTbl) do
-          if data.enable then
+          if (data.enable) then
                Ipr_Data = true
           else
                data.enable = true
