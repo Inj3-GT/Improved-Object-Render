@@ -2,9 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-
-local Ipr_RenderTbl, Ipr_ForceDisabled, Ipr_Frame  
-local Ipr_Ent_Refresh, Ipr_Class = 0.3, {"npc_*", "class C_ClientRagdoll", "spawned_weapon*", "prop_vehicle_*", "player", "prop_p*", "gmod_*"}
+local Ipr_Ent_Refresh, Ipr_Class, Ipr_RenderTbl, Ipr_ForceDisabled, Ipr_Frame = 0.3, {"npc_*", "class C_ClientRagdoll", "spawned_weapon*", "prop_vehicle_*", "player", "prop_p*", "gmod_*"}
 
 local function Ipr_RendDist(player, target, dist)
      return player:GetPos():DistToSqr(target:GetPos()) < (dist * 25000) or false
