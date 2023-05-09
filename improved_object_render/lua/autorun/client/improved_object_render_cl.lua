@@ -8,7 +8,7 @@ local function Ipr_RendDist(player, target, dist)
      return player:GetPos():DistToSqr(target:GetPos()) < (dist * 25000) or false
 end
 
-local function Ipr_Update_Tbl()
+local function Ipr_UpdateTbl()
      local ipr = {}
      for _, v in ipairs(Ipr_Class) do
          local ipr_fbc = ents.FindByClass(v)
@@ -44,7 +44,7 @@ local function Ipr_Rendering_Ent()
      local Ipr_LocalPlayer = LocalPlayer()
      local Ipr_GetVeh = Ipr_LocalPlayer:GetVehicle()
 
-     local Ipr_Tbl_Obj = Ipr_Update_Tbl()
+     local Ipr_Tbl_Obj = Ipr_UpdateTbl()
      if (Ipr_RenderTbl.worldspawn.enable) then        
          local ipr_spawn_npc = Ipr_Tbl_Obj["npc_*"]
          for i = 1, #ipr_spawn_npc do
