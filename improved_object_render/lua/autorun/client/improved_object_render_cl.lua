@@ -58,7 +58,6 @@ local function Ipr_Rendering_Ent()
                  Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
-
          local ipr_spawn_weap = Ipr_Tbl_Obj["spawned_weapon*"]
          for i = 1, #ipr_spawn_weap do
              local ipr_object = ipr_spawn_weap[i]
@@ -68,7 +67,6 @@ local function Ipr_Rendering_Ent()
                  Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
-
          local ipr_spawn_cragdoll = Ipr_Tbl_Obj["class C_ClientRagdoll"]
          for i = 1, #ipr_spawn_cragdoll do
              local ipr_object = ipr_spawn_cragdoll[i]
@@ -78,7 +76,6 @@ local function Ipr_Rendering_Ent()
                  Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
              end
          end
-
          local ipr_spawn_gmod_b = Ipr_Tbl_Obj["gmod_*"]
          for i = 1, #ipr_spawn_gmod_b do
              local ipr_object = ipr_spawn_gmod_b[i]
