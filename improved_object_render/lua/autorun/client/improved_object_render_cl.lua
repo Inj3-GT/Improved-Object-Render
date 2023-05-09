@@ -129,7 +129,7 @@ end
 
 local function Ipr_Sync_Data()
      Ipr_RenderTbl = net.ReadTable()
-     local Ipr_RenderTbl_Old = table.Copy(Ipr_RenderTbl)
+     local Ipr_RenderTbl_Old = Ipr_RenderTbl
      Ipr_ForceDisabled = true
 
      local Ipr_Data = false
