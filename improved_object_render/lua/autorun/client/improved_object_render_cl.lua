@@ -222,7 +222,7 @@ draw.DrawText(Ipr_RenderObject.Language.player_dist, Ipr_Font, w/2,245, color_wh
 draw.DrawText(Ipr_RenderObject.Language.object_dist, Ipr_Font, w/2,295, color_white, TEXT_ALIGN_CENTER )
 
 draw.DrawText("Status : " ..Ipr_Enable, Ipr_Font, 35,28, color_white, TEXT_ALIGN_CENTER )
-draw.DrawText("v3.0", Ipr_Font, w-25,415, color_white, TEXT_ALIGN_LEFT )
+draw.DrawText("v3.2", Ipr_Font, w-25,415, color_white, TEXT_ALIGN_LEFT )
 draw.DrawText("Inj3", Ipr_Font, 10,415, color_white, TEXT_ALIGN_LEFT )
 end
 
