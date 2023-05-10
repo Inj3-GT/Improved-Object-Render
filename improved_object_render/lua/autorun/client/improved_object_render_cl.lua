@@ -42,7 +42,6 @@ end
 
 local function Ipr_Rendering_Ent()
      local Ipr_LocalPlayer = LocalPlayer()
-     local Ipr_GetVeh = Ipr_LocalPlayer:GetVehicle()
 
      local Ipr_Tbl_Obj = Ipr_UpdateTbl()
      if (Ipr_RenderTbl.worldspawn.enable) then        
@@ -88,6 +87,7 @@ local function Ipr_Rendering_Ent()
      end
      if (Ipr_RenderTbl.vehicle.enable) then
          local ipr_spawn_prop_veh = Ipr_Tbl_Obj["prop_vehicle_*"]
+	 local Ipr_GetVeh = Ipr_LocalPlayer:GetVehicle()
          for i = 1, #ipr_spawn_prop_veh do
              local ipr_object = ipr_spawn_prop_veh[i]
              if (ipr_object == Ipr_GetVeh) then
