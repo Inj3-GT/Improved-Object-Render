@@ -42,8 +42,8 @@ end
 
 local function Ipr_Rendering_Ent()
      local Ipr_LocalPlayer = LocalPlayer()
-
      local Ipr_Tbl_Obj = Ipr_UpdateTbl()
+	
      if (Ipr_RenderTbl.worldspawn.enable) then        
          local ipr_spawn_npc = Ipr_Tbl_Obj["npc_*"]
          for i = 1, #ipr_spawn_npc do
