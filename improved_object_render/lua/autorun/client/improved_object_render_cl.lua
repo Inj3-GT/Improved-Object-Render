@@ -49,10 +49,10 @@ local function Ipr_Rendering_Ent()
          local ipr_spawn_npc = Ipr_Tbl_Obj["npc_*"]
          for i = 1, #ipr_spawn_npc do
              local ipr_object = ipr_spawn_npc[i]
-             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
-                 if ((ipr_object:IsNPC() or ipr_object.Type == "nextbot") and ipr_object:GetSolidFlags() == 20 and ipr_object:GetMoveType() == 0) then
+	     if ((ipr_object:IsNPC() or ipr_object.Type == "nextbot") and ipr_object:GetSolidFlags() == 20 and ipr_object:GetMoveType() == 0) then
                      continue
-                 end
+             end	
+             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderTbl.worldspawn.distance) then
                  Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
              else
                  Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
