@@ -20,7 +20,11 @@ local function Ipr_UpdateTbl()
 end
 
 local function Ipr_Draw(val, bool)
-    if (bool) then val:AddEffects(EF_NODRAW) else val:RemoveEffects(EF_NODRAW) end
+    if (bool) then
+        val:AddEffects(EF_NODRAW)
+    else
+        val:RemoveEffects(EF_NODRAW)
+    end
 end
 
 local function Ipr_RendWp(val, bool)
