@@ -18,7 +18,7 @@ local function Ipr_UpdateTbl()
     return Ipr
 end
 
-local function Ipr_RendWp(val, bool, ply)
+local function Ipr_RendWp(val, bool)
     local Ipr_wp = val:GetActiveWeapon()
     if IsValid(Ipr_wp) then
         Ipr_wp:SetNoDraw(bool)
@@ -27,7 +27,7 @@ end
 
 local function Ipr_RendObj(bool, ply, val, wp)
     if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) or ply:GetNoDraw() then
-        return val:SetNoDraw(false), (wp) and Ipr_RendWp(val, false, ply)
+        return val:SetNoDraw(false), (wp) and Ipr_RendWp(val, false)
     end
     if (bool) then
         local Ipr_Aim_Vector = ply:GetAimVector()
@@ -38,12 +38,12 @@ local function Ipr_RendObj(bool, ply, val, wp)
         local Ipr_Inf = Ipr_AimVec < Ipr_Pi
 
         if (Ipr_Inf) then
-            return val:SetNoDraw(true), (wp) and Ipr_RendWp(val, true, ply)
+            return val:SetNoDraw(true), (wp) and Ipr_RendWp(val, true)
         end
     else
-        return val:SetNoDraw(true), (wp) and Ipr_RendWp(val, true, ply)
+        return val:SetNoDraw(true), (wp) and Ipr_RendWp(val, true)
     end
-    return val:SetNoDraw(false), (wp) and Ipr_RendWp(val, false, ply)
+    return val:SetNoDraw(false), (wp) and Ipr_RendWp(val, false)
 end
 
 local function Ipr_Rendering_Ent()
