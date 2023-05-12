@@ -2,7 +2,6 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-
 local Ipr_Save, Ipr_Cmd = "improvedobjectrender/sauvegarde", "/objectrender"
 util.AddNetworkString("Ipr_ObjectRender_Data")
 util.AddNetworkString("Ipr_ObjectRender_P")
