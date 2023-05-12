@@ -5,8 +5,37 @@
 
 local Ipr_EntRefresh, Ipr_Class, Ipr_Blur, Ipr_Fds = 0.3, {"npc_*", "class C_ClientRagdoll", "weapon*", "prop_vehicle_*", "player", "prop_p*", "gmod_*", "func_*"}, Material("pp/blurscreen")
 
-local function Ipr_RendDist(player, target, dist)
-    return player:GetPos():DistToSqr(target:GetPos()) < (dist * 25000) or false
+local function Ipr_RendDist(p, t, d)
+    return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
+end
+
+local function Ipr_RendDraw(v, b)
+    if (b) then
+        v:AddEffects(EF_NODRAW)
+        return
+    end
+    v:RemoveEffects(EF_NODRAW)
+end
+
+local function Ipr_RendObj(b, p, v)
+    if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) then
+        return Ipr_RendDraw(v, false)
+    end
+    if (b) then
+        local Ipr_Aim_Vector = p:GetAimVector()
+        local Ipr_Ent_V = v:GetPos() - p:GetEyeTrace().StartPos
+        local Ipr_Len = Ipr_Ent_V:Length()
+        local Ipr_AimVec = Ipr_Aim_Vector:Dot( Ipr_Ent_V ) / Ipr_Len
+        local Ipr_Pi = math.pi / 300
+        local Ipr_Inf = Ipr_AimVec < Ipr_Pi
+
+        if (Ipr_Inf) then
+            return Ipr_RendDraw(v, true)
+        end
+    else
+        return Ipr_RendDraw(v, true)
+    end
+    return Ipr_RendDraw(v, false)
 end
 
 local function Ipr_UpdateTbl()
@@ -19,43 +48,7 @@ local function Ipr_UpdateTbl()
     return Ipr
 end
 
-local function Ipr_Draw(val, bool)
-    if (bool) then
-        val:AddEffects(EF_NODRAW)
-    else
-        val:RemoveEffects(EF_NODRAW)
-    end
-end
-
-local function Ipr_RendWp(val, bool)
-    local Ipr_wp = val:GetActiveWeapon()
-    if IsValid(Ipr_wp) then
-        Ipr_Draw(Ipr_wp, bool)
-    end
-end
-
-local function Ipr_RendObj(bool, ply, val, wp)
-    if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) then
-        return Ipr_Draw(val, false), (wp) and Ipr_RendWp(val, false)
-    end
-    if (bool) then
-        local Ipr_Aim_Vector = ply:GetAimVector()
-        local Ipr_Ent_V = val:GetPos() - ply:GetEyeTrace().StartPos
-        local Ipr_Len = Ipr_Ent_V:Length()
-        local Ipr_AimVec = Ipr_Aim_Vector:Dot( Ipr_Ent_V ) / Ipr_Len
-        local Ipr_Pi = math.pi / 300
-        local Ipr_Inf = Ipr_AimVec < Ipr_Pi
-
-        if (Ipr_Inf) then
-            return Ipr_Draw(val, true), (wp) and Ipr_RendWp(val, true)
-        end
-    else
-        return Ipr_Draw(val, true), (wp) and Ipr_RendWp(val, true)
-    end
-    return Ipr_Draw(val, false), (wp) and Ipr_RendWp(val, false)
-end
-
-local function Ipr_Rendering_Ent()
+local function Ipr_RendEnt()
     local Ipr_LocalPlayer = LocalPlayer()
     local Ipr_Tbl_Obj = Ipr_UpdateTbl()
 
@@ -67,9 +60,9 @@ local function Ipr_Rendering_Ent()
                 continue
             end
             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderObject.Render.worldspawn.distance) then
-                Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object, true)
+                Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
             else
-                Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object, true)
+                Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
             end
         end
         local ipr_spawn_weap = Ipr_Tbl_Obj["weapon*"]
@@ -135,9 +128,9 @@ local function Ipr_Rendering_Ent()
                 continue
             end
             if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderObject.Render.player.distance) then
-                Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object, true)
+                Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
             else
-                Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object, true)
+                Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
             end
         end
     end
@@ -168,7 +161,7 @@ local function Ipr_Sync_Data()
         timer.Remove("Ipr_Sys_ObjRender_Sync")
     end
     if (Ipr_Dt) then
-        timer.Create("Ipr_Sys_ObjRender", Ipr_EntRefresh, 0, Ipr_Rendering_Ent)
+        timer.Create("Ipr_Sys_ObjRender", Ipr_EntRefresh, 0, Ipr_RendEnt)
     end
 
     timer.Create("Ipr_Sys_ObjRender_Sync", 0.5, 1,function()
