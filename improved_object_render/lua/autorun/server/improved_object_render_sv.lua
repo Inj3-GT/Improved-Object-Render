@@ -39,7 +39,6 @@ local function Ipr_SaveData(tbl, bool, player)
          player:SendLua([[chat.AddText(color_red, "Improved Object Render : ", color_white, "Data has been perfectly saving and is being sent to all player !" )]])
          return
      end
- 
      MsgC(color_white, "[Improved Object Render] Success ! Data Loaded !\n" )
 end 
 
