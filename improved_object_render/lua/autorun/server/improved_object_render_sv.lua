@@ -36,7 +36,7 @@ local function Ipr_SaveData(tbl, bool, player)
 
      if (bool) then
           Ipr_BroadFunc(tbl, true)
-          player:SendLua([[chat.AddText( Color(255,0,0),"Improved Object Render : ", color_white, "Data has been perfectly saving and is being sent to all player !" )]])
+          player:SendLua([[chat.AddText(color_red, "Improved Object Render : ", color_white, "Data has been perfectly saving and is being sent to all player !" )]])
      else
           MsgC(color_white, "[Improved Object Render] Success ! Data Loaded !\n" )
      end
@@ -88,7 +88,7 @@ local function Ipr_Rcv_Data(len, ply)
      if ply:IsSuperAdmin() then
           Ipr_SaveData(net.ReadTable(), true, ply)
      else
-          ply:SendLua([[chat.AddText( Color(255,0,0),"Improved Object Render : ", color_white, "You're not superadmin, where you try to send values when you're not allowed to !" )]])
+          ply:SendLua([[chat.AddText(color_red, "Improved Object Render : ",color_white , "You're not superadmin, where you try to send values when you're not allowed to !" )]])
      end
 end
 
