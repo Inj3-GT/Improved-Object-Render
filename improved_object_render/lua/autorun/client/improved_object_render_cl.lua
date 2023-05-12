@@ -89,7 +89,7 @@ local function Ipr_RendEnt()
         local ipr_sragdoll = Ipr_Tbl_Obj["class C_ClientRagdoll"]
         for i = 1, #ipr_sragdoll do
             local ipr_object = ipr_sragdoll[i]
-            if Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderObject.Render.worldspawn.distance) then
+            if (Ipr_RendDist(Ipr_LocalPlayer, ipr_object, Ipr_RenderObject.Render.worldspawn.distance)) then
                 Ipr_RendObj(true, Ipr_LocalPlayer, ipr_object)
             else
                 Ipr_RendObj(false, Ipr_LocalPlayer, ipr_object)
@@ -235,7 +235,7 @@ local function Ipr_ObjectRender_P()
         draw.DrawText(Ipr_RenderObject.Language.object_dist, Ipr_Font, w/2,295, color_white, TEXT_ALIGN_CENTER )
 
         draw.DrawText("Status : " ..Ipr_Enable, Ipr_Font, 35,28, color_white, TEXT_ALIGN_CENTER )
-        draw.DrawText("v3.4", Ipr_Font, w-25,415, color_white, TEXT_ALIGN_LEFT )
+        draw.DrawText(Ipr_RenderObject.Version, Ipr_Font, w-25,415, color_white, TEXT_ALIGN_LEFT )
         draw.DrawText("Inj3", Ipr_Font, 10,415, color_white, TEXT_ALIGN_LEFT )
     end
 
