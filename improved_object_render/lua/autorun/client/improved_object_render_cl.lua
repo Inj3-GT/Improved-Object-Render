@@ -185,7 +185,7 @@ local function Ipr_ObjectRender_P()
         return
     end
 
-    local Ipr_Enable, Ipr_Font = "Off", "Default"
+    local Ipr_Enable = "Off"
     for _, data in pairs(Ipr_RenderObject.Render) do
         if (data.enable) then
             Ipr_Enable = "On"
@@ -214,6 +214,7 @@ local function Ipr_ObjectRender_P()
     Ipr_Frame:SetPos(ScrW()/2-150, ScrH()/2-200)
     Ipr_Frame:SetSize(0, 0)
     Ipr_Frame:SizeTo(280, 430, .5, 0, 10)
+    local Ipr_Font = "Default"
     Ipr_Frame.Paint = function(self, w, h)
         local x, y = self:LocalToScreen(0, 0)
         surface.SetDrawColor(255, 255, 255)
