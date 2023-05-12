@@ -240,7 +240,6 @@ local function Ipr_ObjectRender_P()
     end
 
     local Ipr_Tbl_Copy = table.Copy(Ipr_RenderObject.Render)
-
     Ipr_Slide_A:SetPos(-194, 160)
     Ipr_Slide_A:SetSize(485, 20)
     Ipr_Slide_A:SetText( "" )
