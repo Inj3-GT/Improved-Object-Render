@@ -2,7 +2,6 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-
 local Ipr_EntRefresh, Ipr_Class, Ipr_Blur, Ipr_Fds = 0.3, {"npc_*", "class C_ClientRagdoll", "weapon*", "prop_vehicle_*", "player", "prop_p*", "gmod_*", "func_*"}, Material("pp/blurscreen")
 
 local function Ipr_RendDist(p, t, d)
