@@ -5,11 +5,10 @@
 if (SERVER) then
     return
 end
-
 Ipr_RenderObject = Ipr_RenderObject or {}
 Ipr_RenderObject.Render = Ipr_RenderObject.Render or {}
-Ipr_RenderObject.Version = "v3.5"
 
+Ipr_RenderObject.Version = "v3.5"
 Ipr_RenderObject.Language = {
     settings = "Settings panel for Improved Object Render",
     datasend = "All data are automatically synchronized \n with players connected !",
