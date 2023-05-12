@@ -2,7 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_EntRefresh, Ipr_Class, Ipr_Blur, Ipr_Fds = 0.3, {"npc_*", "class C_ClientRagdoll", "weapon*", "prop_vehicle_*", "player", "prop_p*", "gmod_*", "func_*"}, Material("pp/blurscreen")
+local Ipr_EntR, Ipr_Class, Ipr_Fds = 0.3, {"npc_*", "class C_ClientRagdoll", "weapon*", "prop_vehicle_*", "player", "prop_p*", "gmod_*", "func_*"}
 
 local function Ipr_RendDist(p, t, d)
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
@@ -160,7 +160,7 @@ local function Ipr_Sync_Data()
         timer.Remove("Ipr_Sys_ObjRender_Sync")
     end
     if (Ipr_Dt) then
-        timer.Create("Ipr_Sys_ObjRender", Ipr_EntRefresh, 0, Ipr_RendEnt)
+        timer.Create("Ipr_Sys_ObjRender", Ipr_EntR, 0, Ipr_RendEnt)
     end
 
     timer.Create("Ipr_Sys_ObjRender_Sync", 0.5, 1,function()
@@ -175,7 +175,7 @@ local function Ipr_Sync_Data()
     end)
 end
 
-local Ipr_Frame = nil
+local Ipr_Frame, Ipr_Blur = nil, Material("pp/blurscreen")
 local function Ipr_ObjectRender_P()
     if not Ipr_RenderObject.Render.worldspawn then
         print("Data for are waiting to be received")
