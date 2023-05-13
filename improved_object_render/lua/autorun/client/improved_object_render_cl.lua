@@ -2,7 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "npc_", "weapon", "prop_vehicle_", "Player", "prop_p", "prop_d", "prop_r", "gmod_", "func_"}
+local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "class C_BaseEntity", "npc_", "weapon", "prop_vehicle_", "Player", "prop_p", "prop_d", "prop_r", "gmod_", "func_", "env_"}
 
 local function Ipr_RendDist(p, t, d)
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
@@ -100,10 +100,10 @@ local function Ipr_RendEnt()
                 end
             end
         end
-        local Ipr_SpBrush = Ipr_UpdTbl["func_"]
-        if (Ipr_SpBrush) then
-            for i = 1, #Ipr_SpBrush do
-                local Ipr_Obj = Ipr_SpBrush[i]
+        local Ipr_SpRagdoll = Ipr_UpdTbl["class C_ClientRagdoll"]
+        if (Ipr_SpRagdoll) then
+            for i = 1, #Ipr_SpRagdoll do
+                local Ipr_Obj = Ipr_SpRagdoll[i]
                 if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance)) then
                     Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
                 else
@@ -111,10 +111,32 @@ local function Ipr_RendEnt()
                 end
             end
         end
-        local Ipr_SpRagdoll = Ipr_UpdTbl["class C_ClientRagdoll"]
-        if (Ipr_SpRagdoll) then
-            for i = 1, #Ipr_SpRagdoll do
-                local Ipr_Obj = Ipr_SpRagdoll[i]
+        local Ipr_SpBaseEnt = Ipr_UpdTbl["class C_BaseEntity"]
+        if (Ipr_SpBaseEnt) then
+            for i = 1, #Ipr_SpBaseEnt do
+                local Ipr_Obj = Ipr_SpBaseEnt[i]
+                if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance)) then
+                    Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
+                else
+                    Ipr_RendObj(false, Ipr_Lp, Ipr_Obj)
+                end
+            end
+        end
+        local Ipr_SpEnvSpr = Ipr_UpdTbl["env_"]
+        if (Ipr_SpEnvSpr) then
+            for i = 1, #Ipr_SpEnvSpr do
+                local Ipr_Obj = Ipr_SpEnvSpr[i]
+                if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance)) then
+                    Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
+                else
+                    Ipr_RendObj(false, Ipr_Lp, Ipr_Obj)
+                end
+            end
+        end
+        local Ipr_SpBrush = Ipr_UpdTbl["func_"]
+        if (Ipr_SpBrush) then
+            for i = 1, #Ipr_SpBrush do
+                local Ipr_Obj = Ipr_SpBrush[i]
                 if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance)) then
                     Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
                 else
