@@ -2,7 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "npc_", "weapon", "prop_vehicle_", "player", "prop_", "gmod_", "func_"}
+local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "npc_", "weapon", "prop_vehicle_", "player", "prop_p", "prop_d", "prop_r", "gmod_", "func_"}
 
 local function Ipr_RendDist(p, t, d)
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
@@ -168,10 +168,32 @@ local function Ipr_RendEnt()
         end
     end
     if (Ipr_RenderObject.Render.object.enable) then
-        local Ipr_SpProp = Ipr_UpdTbl["prop_"]
-        if (Ipr_SpProp) then
-            for i = 1, #Ipr_SpProp do
-                local Ipr_Obj = Ipr_SpProp[i]
+        local Ipr_SpPropP = Ipr_UpdTbl["prop_p"]
+        if (Ipr_SpPropP) then
+            for i = 1, #Ipr_SpPropP do
+                local Ipr_Obj = Ipr_SpPropP[i]
+                if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.object.distance)) then
+                    Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
+                else
+                    Ipr_RendObj(false, Ipr_Lp, Ipr_Obj)
+                end
+            end
+        end
+        local Ipr_SpPropD = Ipr_UpdTbl["prop_d"]
+        if (Ipr_SpPropD) then
+            for i = 1, #Ipr_SpPropD do
+                local Ipr_Obj = Ipr_SpPropD[i]
+                if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.object.distance)) then
+                    Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
+                else
+                    Ipr_RendObj(false, Ipr_Lp, Ipr_Obj)
+                end
+            end
+        end
+        local Ipr_SpPropR = Ipr_UpdTbl["prop_r"]
+        if (Ipr_SpPropR) then
+            for i = 1, #Ipr_SpPropR do
+                local Ipr_Obj = Ipr_SpPropR[i]
                 if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.object.distance)) then
                     Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
                 else
