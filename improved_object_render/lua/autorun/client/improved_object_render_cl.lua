@@ -265,7 +265,6 @@ local function Ipr_ObjectRender_P()
     if IsValid(Ipr_Frame) then
         return
     end
-
     local Ipr_Enable = "Off"
     for _, data in pairs(Ipr_RenderObject.Render) do
         if (data.enable) then
