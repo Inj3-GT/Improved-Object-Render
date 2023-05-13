@@ -2,7 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Fds, Ipr_Cs = nil, {"npc_", "class C_ClientRagdoll","weapon", "prop_vehicle_", "player", "prop_p", "gmod_", "func_"}
+local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "npc_", "weapon", "prop_vehicle_", "player", "prop_", "gmod_", "func_"}
 
 local function Ipr_RendDist(p, t, d)
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
@@ -24,7 +24,7 @@ local function Ipr_RendObj(b, p, v)
         local Ipr_Aim_Vector = p:GetAimVector()
         local Ipr_Ent_V = v:GetPos() - p:GetEyeTrace().StartPos
         local Ipr_Len = Ipr_Ent_V:Length()
-        local Ipr_AimVec = Ipr_Aim_Vector:Dot( Ipr_Ent_V ) / Ipr_Len
+        local Ipr_AimVec = Ipr_Aim_Vector:Dot(Ipr_Ent_V) / Ipr_Len
         local Ipr_Pi = math.pi / 300
         local Ipr_Inf = Ipr_AimVec < Ipr_Pi
 
@@ -82,6 +82,17 @@ local function Ipr_RendEnt()
                 if (Ipr_Obj:GetOwner() == Ipr_Lp) then
                     continue
                 end
+                if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance)) then
+                    Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
+                else
+                    Ipr_RendObj(false, Ipr_Lp, Ipr_Obj)
+                end
+            end
+        end
+        local Ipr_SpParticleSys = Ipr_UpdTbl["class C_ParticleSystem"]
+        if (Ipr_SpParticleSys) then
+            for i = 1, #Ipr_SpParticleSys do
+                local Ipr_Obj = Ipr_SpParticleSys[i]
                 if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance)) then
                     Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
                 else
@@ -157,7 +168,7 @@ local function Ipr_RendEnt()
         end
     end
     if (Ipr_RenderObject.Render.object.enable) then
-        local Ipr_SpProp = Ipr_UpdTbl["prop_p"]
+        local Ipr_SpProp = Ipr_UpdTbl["prop_"]
         if (Ipr_SpProp) then
             for i = 1, #Ipr_SpProp do
                 local Ipr_Obj = Ipr_SpProp[i]
