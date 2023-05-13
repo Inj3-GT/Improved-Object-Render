@@ -2,7 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "npc_", "weapon", "prop_vehicle_", "player", "prop_p", "prop_d", "prop_r", "gmod_", "func_"}
+local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "npc_", "weapon", "prop_vehicle_", "Player", "prop_p", "prop_d", "prop_r", "gmod_", "func_"}
 
 local function Ipr_RendDist(p, t, d)
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
@@ -152,7 +152,7 @@ local function Ipr_RendEnt()
         end
     end
     if (Ipr_RenderObject.Render.player.enable) then
-        local Ipr_SpPlayer = Ipr_UpdTbl["player"]
+        local Ipr_SpPlayer = Ipr_UpdTbl["Player"]
         if (Ipr_SpPlayer) then
             for i = 1, #Ipr_SpPlayer do
                 local Ipr_Obj = Ipr_SpPlayer[i]
