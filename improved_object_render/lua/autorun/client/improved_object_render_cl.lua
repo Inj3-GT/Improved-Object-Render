@@ -2,7 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "class C_BaseEntity", "npc_", "weapon", "prop_vehicle_", "Player", "prop_p", "prop_d", "prop_r", "gmod_", "func_", "env_"}
+local Ipr_Fds, Ipr_Cs = nil, {"class C_ClientRagdoll", "class C_ParticleSystem", "class C_BaseEntity", "npc_", "weapon", "prop_vehicle_", "Player", "prop_p", "prop_d", "prop_r", "gmod_", "func_"}
 
 local function Ipr_RendDist(p, t, d)
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
@@ -122,17 +122,6 @@ local function Ipr_RendEnt()
                 end
             end
         end
-        local Ipr_SpEnvSpr = Ipr_UpdTbl["env_"]
-        if (Ipr_SpEnvSpr) then
-            for i = 1, #Ipr_SpEnvSpr do
-                local Ipr_Obj = Ipr_SpEnvSpr[i]
-                if (Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance)) then
-                    Ipr_RendObj(true, Ipr_Lp, Ipr_Obj)
-                else
-                    Ipr_RendObj(false, Ipr_Lp, Ipr_Obj)
-                end
-            end
-        end
         local Ipr_SpBrush = Ipr_UpdTbl["func_"]
         if (Ipr_SpBrush) then
             for i = 1, #Ipr_SpBrush do
@@ -226,7 +215,7 @@ local function Ipr_RendEnt()
     end
 end
 
-local Ipr_EntR = 0.1
+local Ipr_EntR = 0.150
 local function Ipr_Sync_Data()
     Ipr_RenderObject.Render = net.ReadTable()
     local Ipr_RenderTbl_Old = table.Copy(Ipr_RenderObject.Render)
