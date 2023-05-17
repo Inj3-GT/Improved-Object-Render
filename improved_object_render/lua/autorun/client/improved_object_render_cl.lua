@@ -215,7 +215,7 @@ local function Ipr_RendEnt()
     end
 end
 
-local Ipr_EntR = 0.150
+local Ipr_EntR = 0.15
 local function Ipr_Sync_Data()
     Ipr_RenderObject.Render = net.ReadTable()
     local Ipr_RenderTbl_Old = table.Copy(Ipr_RenderObject.Render)
