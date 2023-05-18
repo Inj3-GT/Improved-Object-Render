@@ -24,7 +24,4 @@ Ipr_RenderObject.Language = {
     obj = "Prop",
     close_ = "Close IOR",
     weapandmore = "Weapons on ground, doors, ragdolls, lamps, permanent objects and more..",
-    disable_all = "Disable all module",
-    enable_all = "Enable all module",
-    loading_data = "Loading data... please open the panel in a few seconds.",
 }
