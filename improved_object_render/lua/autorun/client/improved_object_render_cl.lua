@@ -18,7 +18,7 @@ local function Ipr_RendDraw(v, b)
 end
 
 local function Ipr_RendObj(b, p, v)
-    if not Ipr_Fds and (v.IprDraw ~= nil) and ((v.IprDraw == b) and (b ~= v:IsEffectActive(32))) then
+    if not Ipr_Fds and (not b and ((v.IprDraw == b) and (b ~= v:IsEffectActive(32)))) then
         return
     end
     if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) then
