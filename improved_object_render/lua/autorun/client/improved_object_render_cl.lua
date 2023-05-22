@@ -10,7 +10,6 @@ end
 
 local function Ipr_RendDraw(v, b)
     v.IprDraw = not b
-    
     if (b) then
         v:AddEffects(32)
         return
