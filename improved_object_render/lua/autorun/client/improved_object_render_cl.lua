@@ -10,17 +10,13 @@ end
 
 local function Ipr_RendDraw(v, b)
     if (b) then
-        v:AddEffects(32)
-    else
-        v:RemoveEffects(32)
-    end 
-   ---v.IprDraw = not b
+        v:AddEffects(EF_NODRAW)
+        return
+    end
+    v:RemoveEffects(EF_NODRAW)
 end
 
 local function Ipr_RendObj(b, p, v)
- ---if not Ipr_Fds and (not b and ((v.IprDraw == b) and (b ~= v:IsEffectActive(32)))) then
-        ---return
- ---end
     if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) then
         return Ipr_RendDraw(v, false)
     end
@@ -38,7 +34,6 @@ local function Ipr_RendObj(b, p, v)
     else
         return Ipr_RendDraw(v, true)
     end
-    
     return Ipr_RendDraw(v, false)
 end
 
@@ -58,7 +53,6 @@ local function Ipr_TblObj()
             end
         end
     end
-    
     return Ipr_TblUpd
 end
 
