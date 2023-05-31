@@ -2,92 +2,86 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
+local Ipr_Svg = "improved_object_render/save" --- Save path
+
 util.AddNetworkString("Ipr_ObjectRender_Data")
 util.AddNetworkString("Ipr_ObjectRender_P")
 
-local function Ipr_BroadFunc(tbl, bool, player)
+local function Ipr_BroadFunc(t, b, p)
      net.Start("Ipr_ObjectRender_Data")
-     net.WriteTable(tbl)
+     net.WriteTable(t)
  
-     if (bool) then
+     if (b) then
          net.Broadcast()
          return
      end
-     net.Send(player)
+     net.Send(p)
 end
 
-local Ipr_Save = "improved_object_render/save"
-local function Ipr_SaveData(tbl, bool, player)
-     local Ipr_Util = util.TableToJSON(tbl)
-     file.Write(Ipr_Save.. "/sv.json", Ipr_Util)
+local function Ipr_SaveData(t, b, p)
+     local Ipr_Util = util.TableToJSON(t)
+     file.Write(Ipr_Svg.. "/sv.json", Ipr_Util)
  
-     if (bool) then
-         Ipr_BroadFunc(tbl, true)
-         player:SendLua([[chat.AddText(color_red, "Improved Object Render : ", color_white, "Data has been perfectly saving and is being sent to all player !" )]])
+     if (b) then
+         Ipr_BroadFunc(t, true)
+         p:SendLua([[chat.AddText(color_red, "Improved Object Render : ", color_white, "Data has been perfectly saving and is being sent to all player !" )]])
          return
      end
+
      MsgC(color_white, "[Improved Object Render] Success ! Data Loaded !\n" )
-end 
+end
+
+do
+    if not file.Exists(Ipr_Svg, "DATA") then
+        file.CreateDir(Ipr_Svg)
+    end
+    if not file.Exists(Ipr_Svg .."/sv.json", "DATA") then
+        local ipr_t = {worldspawn = {["enable"] = true,["distance"] = 500,},vehicle = {["enable"] = true,["distance"] = 1000,},player = {["enable"] = true,["distance"] = 1000,},object = {["enable"] = true,["distance"] = 800,}}
+        Ipr_SaveData(ipr_t, false)
+
+        MsgC(color_white, "[Improved Object Render] Creating Data, please wait..\n" )
+    else
+        MsgC(color_white, "[Improved Object Render] Success ! Data Loaded !\n" )
+    end
+end
  
-local function Ipr_RenderCmd(ply, cmd, args)
-     if not ply:IsSuperAdmin() then
+local function Ipr_RenderCmd(p)
+     if not p:IsSuperAdmin() then
          return
      end
 
      net.Start("Ipr_ObjectRender_P")
-     net.Send(ply)
+     net.Send(p)
 end
 
-local function Ipr_RcvData(len, ply)
-     if not ply:IsSuperAdmin() then
+local function Ipr_RcvData(l, p)
+     if not p:IsSuperAdmin() then
          return
      end
 
-     Ipr_SaveData(net.ReadTable(), true, ply)
+     Ipr_SaveData(net.ReadTable(), true, p)
 end 
 
-local function Ipr_RenderExists(ext)
-    local Ipr_Ext = Ipr_Save
-    if (ext) then
-        Ipr_Ext = Ipr_Save ..ext
-    end
-    if (file.Exists(Ipr_Ext, "DATA")) then
-        return true
-    end
-
-    return false
-end
-if not Ipr_RenderExists(nil) then
-    file.CreateDir(Ipr_Save)
-end
-if not Ipr_RenderExists("/sv.json") then
-    local Ipr_R = {worldspawn = {["enable"] = true,["distance"] = 500,},vehicle = {["enable"] = true,["distance"] = 1000,},player = {["enable"] = true,["distance"] = 1000,},object = {["enable"] = true,["distance"] = 800,}}
-    Ipr_SaveData(Ipr_R, false)
-    MsgC(color_white, "[Improved Object Render] Creating Data, please wait..\n" )
-else
-    MsgC(color_white, "[Improved Object Render] Success ! Data Loaded !\n" )
-end
-
-hook.Add("PlayerSay", "Ipr_ObjectRender_Say", function(ply, text)
-    if not ply:IsSuperAdmin() then
+hook.Add("PlayerSay", "Ipr_ObjectRender_Say", function(p, t)
+    if not p:IsSuperAdmin() then
         return
     end
-    if (string.lower(text) == "/objectrender") then
+    if (string.lower(t) == "/objectrender") then
         net.Start("Ipr_ObjectRender_P")
-        net.Send(ply)
+        net.Send(p)
 
         return ""
     end
 end)
 
-hook.Add( "PlayerInitialSpawn", "Ipr_ObjectRender_Init",  function(player)
+hook.Add( "PlayerInitialSpawn", "Ipr_ObjectRender_Init",  function(p)
     timer.Simple(5, function()
-        if not IsValid(player) then
+        if not IsValid(p) then
             return
         end
 
-        local Ipr_ReadTable = util.JSONToTable(file.Read(Ipr_Save.. "/sv.json", "DATA"))
-        Ipr_BroadFunc(Ipr_ReadTable, false, player)
+        local Ipr_ReadTable = util.JSONToTable(file.Read(Ipr_Svg.. "/sv.json", "DATA"))
+        Ipr_BroadFunc(Ipr_ReadTable, false, p)
     end)
 end)
 
