@@ -200,18 +200,10 @@ end
 local Ipr_Frame, Ipr_Blur = nil, Material("pp/blurscreen")
 local function Ipr_ObjectRender_P()
     if not Ipr_RenderObject.Render.worldspawn then
-        print("Data for are waiting to be received")
-        return
+        return print("Data for are waiting to be received")
     end
     if IsValid(Ipr_Frame) then
         return
-    end
-    local Ipr_Enable = "Off"
-    for _, data in pairs(Ipr_RenderObject.Render) do
-        if (data.enable) then
-            Ipr_Enable = "On"
-            break
-        end
     end
 
     Ipr_Frame = vgui.Create( "DFrame" )
@@ -235,7 +227,14 @@ local function Ipr_ObjectRender_P()
     Ipr_Frame:SetPos(ScrW()/2-150, ScrH()/2-200)
     Ipr_Frame:SetSize(0, 0)
     Ipr_Frame:SizeTo(280, 430, .5, 0, 10)
-    local Ipr_Font = "Default"
+    local Ipr_Font, ipr_ = "Default", false
+    for _, data in pairs(Ipr_RenderObject.Render) do
+        if (data.enable) then
+            ipr_ = true
+
+            break
+        end
+    end
     Ipr_Frame.Paint = function(self, w, h)
         local x, y = self:LocalToScreen(0, 0)
         surface.SetDrawColor(255, 255, 255)
@@ -260,7 +259,7 @@ local function Ipr_ObjectRender_P()
         draw.DrawText(Ipr_RenderObject.Language.object_dist, Ipr_Font, w/2,295, color_white, TEXT_ALIGN_CENTER)
         draw.DrawText(Ipr_RenderObject.Version, Ipr_Font, w-25,415, color_white, TEXT_ALIGN_LEFT)
 
-        draw.DrawText("Status : " ..Ipr_Enable, Ipr_Font, 35,28, color_white, TEXT_ALIGN_CENTER)
+        draw.DrawText("Status : " ..((ipr_) and "ON" or "OFF"), Ipr_Font, 35,28, color_white, TEXT_ALIGN_CENTER)
         draw.DrawText("Inj3", Ipr_Font, 10,415, color_white, TEXT_ALIGN_LEFT)
     end
 
