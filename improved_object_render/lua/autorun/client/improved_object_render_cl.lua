@@ -408,6 +408,5 @@ local function Ipr_ObjectRender_P()
         Ipr_Frame:Remove()
     end
 end
-
 net.Receive("Ipr_ObjectRender_Data", Ipr_Sync_Data)
 net.Receive("Ipr_ObjectRender_P", Ipr_ObjectRender_P)
