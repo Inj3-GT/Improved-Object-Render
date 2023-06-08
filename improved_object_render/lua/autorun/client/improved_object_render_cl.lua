@@ -67,8 +67,8 @@ local function Ipr_TblObj()
         for _, c in ipairs(Ipr_Cs) do
             if not Ipr_Cx then
                 local Ipr_Mt = string.sub(Ipr_Cl, 1, #c)
-                if ((Ipr_Mt == "gmod_") and not Ipr_FindObj(2, v)) then
-                    continue
+                if (Ipr_Mt == "gmod_") and (not v:GetSpawnEffect() or not Ipr_FindObj(2, v)) then
+                    break
                 end
                 if not string.match(Ipr_Mt, c) then
                     continue
