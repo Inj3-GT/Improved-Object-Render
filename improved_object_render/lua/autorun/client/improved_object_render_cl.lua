@@ -161,7 +161,7 @@ local function Ipr_RendEnt()
         if (Ipr_SpPlayer) then
             for i = 1, #Ipr_SpPlayer do
                 local Ipr_Obj = Ipr_SpPlayer[i]
-                if (Ipr_Obj == Ipr_Lp) or Ipr_Obj:GetNWBool("Admin_Sys_Status") then
+                if Ipr_Obj:GetNWBool("Admin_Sys_Status") then
                     continue
                 end
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.player.distance), Ipr_Lp, Ipr_Obj)
