@@ -409,6 +409,5 @@ local function Ipr_ObjectRender_P()
     end
 end
 
-hook.Remove("PostDrawEffects", "RenderWidgets")
 net.Receive("Ipr_ObjectRender_Data", Ipr_Sync_Data)
 net.Receive("Ipr_ObjectRender_P", Ipr_ObjectRender_P)
