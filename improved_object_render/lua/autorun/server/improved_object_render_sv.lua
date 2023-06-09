@@ -2,10 +2,9 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Svg = "improved_object_render/save" --- Save path
-
 util.AddNetworkString("Ipr_ObjectRender_Data")
 util.AddNetworkString("Ipr_ObjectRender_P")
+local Ipr_Svg = "improved_object_render/save" --- Save path
 
 local function Ipr_BroadFunc(t, b, p)
      net.Start("Ipr_ObjectRender_Data")
