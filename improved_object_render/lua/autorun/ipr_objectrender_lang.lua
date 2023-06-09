@@ -25,6 +25,7 @@ Ipr_RenderObject.Language = {
     close_ = "Close IOR",
     weapandmore = "Weapons on ground, doors, ragdolls, lamps, permanent objects and more..",
 }
+
 Ipr_RenderObject.EntRend = {
     ["class C_ClientRagdoll"] = "ipr_world", 
     ["class C_BaseEntity"] = "ipr_world", 
