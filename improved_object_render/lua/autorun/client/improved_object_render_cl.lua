@@ -99,7 +99,8 @@ local function Ipr_RendEnt()
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, Ipr_Obj)
             end
         end
-    elseif (Ipr_RenderObject.Render.vehicle.enable) then
+    end
+    if (Ipr_RenderObject.Render.vehicle.enable) then
         local Ipr_SpVeh = Ipr_UpdTbl["ipr_vehicle"]
         if (Ipr_SpVeh) then
             local Ipr_GetVeh = Ipr_Lp:GetVehicle()
@@ -111,7 +112,8 @@ local function Ipr_RendEnt()
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.vehicle.distance), Ipr_Lp, Ipr_Obj)
             end
         end
-    elseif (Ipr_RenderObject.Render.player.enable) then
+    end
+    if (Ipr_RenderObject.Render.player.enable) then
         local Ipr_SpPlayer = Ipr_UpdTbl["ipr_player"]
         if (Ipr_SpPlayer) then
             for i = 1, #Ipr_SpPlayer do
@@ -122,7 +124,8 @@ local function Ipr_RendEnt()
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.player.distance), Ipr_Lp, Ipr_Obj)
             end
         end
-    elseif (Ipr_RenderObject.Render.object.enable) then
+    end
+    if (Ipr_RenderObject.Render.object.enable) then
         local Ipr_SpPropP = Ipr_UpdTbl["ipr_prop"]
         if (Ipr_SpPropP) then
             for i = 1, #Ipr_SpPropP do
