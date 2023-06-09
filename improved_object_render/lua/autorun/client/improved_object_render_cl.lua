@@ -2,7 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Cs = {"class C_ClientRagdoll", "class C_BaseEntity", "npc_", "prop_vehicle_", "prop_p", "prop_d", "beam", "gmod_", "prop_r", "func_"}
+local Ipr_Fds = nil
 
 local function Ipr_RendDist(p, t, d)
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
@@ -16,7 +16,6 @@ local function Ipr_RendDraw(v, b)
     v:RemoveEffects(EF_NODRAW)
 end
 
-local Ipr_Fds
 local function Ipr_RendObj(b, p, v)
     if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) then
         return Ipr_RendDraw(v, false)
@@ -61,16 +60,16 @@ end
 local function Ipr_TblObj()
     local Ipr_UpdObj, Ipr_Ents = {}, ents.GetAll()
 
-    for _, v in ipairs(Ipr_Ents) do
-        local Ipr_Cl, Ipr_Cx = v:GetClass(), Ipr_FindObj(nil, v) and "weapon" or Ipr_FindObj(1, v) and "Player" or nil
+    for _, e in ipairs(Ipr_Ents) do
+        local Ipr_Cl, Ipr_Cx = e:GetClass(), (Ipr_FindObj(nil, e) and "ipr_world") or (Ipr_FindObj(1, e) and "ipr_player") or nil
 
-        for _, c in ipairs(Ipr_Cs) do
+        for m, c in pairs(Ipr_RenderObject.EntRend) do
             if not Ipr_Cx then
-                local Ipr_Mt = string.sub(Ipr_Cl, 1, #c)
-                if (Ipr_Mt == "gmod_") and (not v:GetSpawnEffect() or not Ipr_FindObj(2, v)) then
+                local Ipr_Mt = string.sub(Ipr_Cl, 1, #m)
+                if (Ipr_Mt == "gmod_") and (not e:GetSpawnEffect() or not Ipr_FindObj(2, e)) then
                     break
                 end
-                if not string.match(Ipr_Mt, c) then
+                if not string.match(Ipr_Mt, m) then
                     continue
                 end
             else
@@ -80,7 +79,7 @@ local function Ipr_TblObj()
                 Ipr_UpdObj[c] = {}
             end
 
-            Ipr_UpdObj[c][#Ipr_UpdObj[c] + 1] = v
+            Ipr_UpdObj[c][#Ipr_UpdObj[c] + 1] = e
             break
         end
     end
@@ -93,58 +92,16 @@ local function Ipr_RendEnt()
     local Ipr_UpdTbl = Ipr_TblObj()
 
     if (Ipr_RenderObject.Render.worldspawn.enable) then
-        local Ipr_SpNpc = Ipr_UpdTbl["npc_"]
-        if (Ipr_SpNpc) then
-            for i = 1, #Ipr_SpNpc do
-                local Ipr_Obj = Ipr_SpNpc[i]
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, Ipr_Obj)
-            end
-        end
-        local Ipr_SpWeap = Ipr_UpdTbl["weapon"]
-        if (Ipr_SpWeap) then
-            for i = 1, #Ipr_SpWeap do
-                local Ipr_Obj = Ipr_SpWeap[i]
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, Ipr_Obj)
-            end
-        end
-        local Ipr_SpBeam = Ipr_UpdTbl["beam"]
-        if (Ipr_SpBeam) then
-            for i = 1, #Ipr_SpBeam do
-                local Ipr_Obj = Ipr_SpBeam[i]
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, Ipr_Obj)
-            end
-        end
-        local Ipr_SpRagdoll = Ipr_UpdTbl["class C_ClientRagdoll"]
-        if (Ipr_SpRagdoll) then
-            for i = 1, #Ipr_SpRagdoll do
-                local Ipr_Obj = Ipr_SpRagdoll[i]
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, Ipr_Obj)
-            end
-        end
-        local Ipr_SpBaseEnt = Ipr_UpdTbl["class C_BaseEntity"]
-        if (Ipr_SpBaseEnt) then
-            for i = 1, #Ipr_SpBaseEnt do
-                local Ipr_Obj = Ipr_SpBaseEnt[i]
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, Ipr_Obj)
-            end
-        end
-        local Ipr_SpBrush = Ipr_UpdTbl["func_"]
-        if (Ipr_SpBrush) then
-            for i = 1, #Ipr_SpBrush do
-                local Ipr_Obj = Ipr_SpBrush[i]
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, Ipr_Obj)
-            end
-        end
-        local Ipr_SpGmod = Ipr_UpdTbl["gmod_"]
-        if (Ipr_SpGmod) then
-            for i = 1, #Ipr_SpGmod do
-                local Ipr_Obj = Ipr_SpGmod[i]
+        local Ipr_SpWorld = Ipr_UpdTbl["ipr_world"]
+        if (Ipr_SpWorld) then
+            for i = 1, #Ipr_SpWorld do
+                local Ipr_Obj = Ipr_SpWorld[i]
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, Ipr_Obj)
             end
         end
     end
     if (Ipr_RenderObject.Render.vehicle.enable) then
-        local Ipr_SpVeh = Ipr_UpdTbl["prop_vehicle_"]
+        local Ipr_SpVeh = Ipr_UpdTbl["ipr_vehicle"]
         if (Ipr_SpVeh) then
             local Ipr_GetVeh = Ipr_Lp:GetVehicle()
             for i = 1, #Ipr_SpVeh do
@@ -157,7 +114,7 @@ local function Ipr_RendEnt()
         end
     end
     if (Ipr_RenderObject.Render.player.enable) then
-        local Ipr_SpPlayer = Ipr_UpdTbl["Player"]
+        local Ipr_SpPlayer = Ipr_UpdTbl["ipr_player"]
         if (Ipr_SpPlayer) then
             for i = 1, #Ipr_SpPlayer do
                 local Ipr_Obj = Ipr_SpPlayer[i]
@@ -169,24 +126,10 @@ local function Ipr_RendEnt()
         end
     end
     if (Ipr_RenderObject.Render.object.enable) then
-        local Ipr_SpPropP = Ipr_UpdTbl["prop_p"]
+        local Ipr_SpPropP = Ipr_UpdTbl["ipr_prop"]
         if (Ipr_SpPropP) then
             for i = 1, #Ipr_SpPropP do
                 local Ipr_Obj = Ipr_SpPropP[i]
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.object.distance), Ipr_Lp, Ipr_Obj)
-            end
-        end
-        local Ipr_SpPropD = Ipr_UpdTbl["prop_d"]
-        if (Ipr_SpPropD) then
-            for i = 1, #Ipr_SpPropD do
-                local Ipr_Obj = Ipr_SpPropD[i]
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.object.distance), Ipr_Lp, Ipr_Obj)
-            end
-        end
-        local Ipr_SpPropR = Ipr_UpdTbl["prop_r"]
-        if (Ipr_SpPropR) then
-            for i = 1, #Ipr_SpPropR do
-                local Ipr_Obj = Ipr_SpPropR[i]
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, Ipr_Obj, Ipr_RenderObject.Render.object.distance), Ipr_Lp, Ipr_Obj)
             end
         end
@@ -211,7 +154,7 @@ local function Ipr_Sync_Data()
         timer.Create("Ipr_Sys_ObjRender", Ipr_EntR, 0, Ipr_RendEnt)
     end
 
-    timer.Create("Ipr_Sys_ObjRender_Sync", 0.5, 1,function()
+    timer.Create("Ipr_Sys_ObjRender_Sync", Ipr_EntR + 0.4, 1,function()
         if not Ipr_Dt then
             if timer.Exists("Ipr_Sys_ObjRender") then
                 timer.Remove("Ipr_Sys_ObjRender")
