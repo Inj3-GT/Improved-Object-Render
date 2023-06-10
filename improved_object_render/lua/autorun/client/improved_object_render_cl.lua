@@ -2,8 +2,6 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Fds = nil
-
 local function Ipr_RendDist(p, t, d)
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
 end
@@ -16,6 +14,7 @@ local function Ipr_RendDraw(v, b)
     v:RemoveEffects(EF_NODRAW)
 end
 
+local Ipr_Fds = nil
 local function Ipr_RendObj(b, p, v)
     if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) then
         return Ipr_RendDraw(v, false)
