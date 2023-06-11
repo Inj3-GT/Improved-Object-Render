@@ -207,7 +207,6 @@ local function Ipr_ObjectRender_P()
             surface.DrawTexturedRect(x * -1, y * -1, ScrW(), ScrH())
         end
         draw.RoundedBoxEx(6, 0, 0, w, h, Color(0, 0, 0, 50), true, true, true, true )
-
         draw.RoundedBox(6, 0, 0, w, 25, Color(52, 73, 94, 200) )
         draw.RoundedBox(6, 30, 60, w - 60, 80, Color(52, 73, 94, 200))
 
