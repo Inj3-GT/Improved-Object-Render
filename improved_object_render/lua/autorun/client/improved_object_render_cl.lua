@@ -114,7 +114,7 @@ local function Ipr_RendEnt()
         local Ipr_SpPlayer = Ipr_UpdTbl["ipr_player"]
         if (Ipr_SpPlayer) then
             for _, i in ipairs(Ipr_SpPlayer) do
-                if i:GetNWBool("Admin_Sys_Status") then
+                if ((Admin_System_Global) and Admin_System_Global.SysCloakStatus) then --- #Improved Admin System
                     continue
                 end
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, i, Ipr_RenderObject.Render.player.distance), Ipr_Lp, i)
