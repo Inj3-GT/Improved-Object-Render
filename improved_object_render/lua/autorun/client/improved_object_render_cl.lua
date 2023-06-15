@@ -93,8 +93,8 @@ local function Ipr_RendEnt()
     if (Ipr_RenderObject.Render.worldspawn.enable) then
         local Ipr_SpWorld = Ipr_UpdTbl["ipr_world"]
         if (Ipr_SpWorld) then
-            for _, i in ipairs(Ipr_SpWorld) do
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, i, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, i)
+            for _, obj in ipairs(Ipr_SpWorld) do
+                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, obj)
             end
         end
     end
@@ -102,27 +102,27 @@ local function Ipr_RendEnt()
         local Ipr_SpVeh = Ipr_UpdTbl["ipr_vehicle"]
         if (Ipr_SpVeh) then
             local Ipr_GetVeh = Ipr_Lp:GetVehicle()
-            for _, i in ipairs(Ipr_SpVeh) do
-                if (i == Ipr_GetVeh) then
+            for _, obj in ipairs(Ipr_SpVeh) do
+                if (obj == Ipr_GetVeh) then
                     continue
                 end
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, i, Ipr_RenderObject.Render.vehicle.distance), Ipr_Lp, i)
+                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.vehicle.distance), Ipr_Lp, obj)
             end
         end
     end
     if (Ipr_RenderObject.Render.player.enable) then
         local Ipr_SpPlayer = Ipr_UpdTbl["ipr_player"]
         if (Ipr_SpPlayer) then
-            for _, i in ipairs(Ipr_SpPlayer) do
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, i, Ipr_RenderObject.Render.player.distance), Ipr_Lp, i)
+            for _, obj in ipairs(Ipr_SpPlayer) do
+                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.player.distance), Ipr_Lp, obj)
             end
         end
     end
     if (Ipr_RenderObject.Render.object.enable) then
         local Ipr_SpPropP = Ipr_UpdTbl["ipr_prop"]
         if (Ipr_SpPropP) then
-            for _, i in ipairs(Ipr_SpPropP) do
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, i, Ipr_RenderObject.Render.object.distance), Ipr_Lp, i)
+            for _, obj in ipairs(Ipr_SpPropP) do
+                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.object.distance), Ipr_Lp, obj)
             end
         end
     end
