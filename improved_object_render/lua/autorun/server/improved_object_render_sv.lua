@@ -36,7 +36,7 @@ do
         file.CreateDir(Ipr_Svg)
     end
     if not file.Exists(Ipr_Svg .."/sv.json", "DATA") then
-        local ipr_t = {worldspawn = {["enable"] = true,["distance"] = 500,},vehicle = {["enable"] = true,["distance"] = 1000,},player = {["enable"] = true,["distance"] = 1000,},object = {["enable"] = true,["distance"] = 800,}}
+        local ipr_t = {worldspawn = {["enable"] = true,["distance"] = 500},vehicle = {["enable"] = true,["distance"] = 700},player = {["enable"] = true,["distance"] = 700},object = {["enable"] = true,["distance"] = 500}}
         Ipr_SaveData(ipr_t, false)
 
         MsgC(color_white, "[Improved Object Render] Creating Data, please wait..\n" )
