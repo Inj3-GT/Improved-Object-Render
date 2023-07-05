@@ -2,8 +2,8 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local function Ipr_RendDist(p, t, d)
-    return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
+local function Ipr_RendDist(p, t, d)   
+    return p:GetPos():DistToSqr(t:GetPos())  < (d * 25000) or false
 end
 
 local function Ipr_RendDraw(v, b)
@@ -14,23 +14,33 @@ local function Ipr_RendDraw(v, b)
     v:RemoveEffects(EF_NODRAW)
 end
 
+local function Ipr_SizeObj(v)
+    local ipr_s = v:OBBMins() - v:OBBMaxs()
+    ipr_s = ipr_s:Length()
+    if (ipr_s >= 500) then
+        return true
+    end
+
+    return false
+end
+
 local Ipr_Fds
-local function Ipr_RendObj(b, p, v)
+local function Ipr_RendObj(b, p, v, r)
     if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) then
         return Ipr_RendDraw(v, false)
     end
-    if (b) then
-        local Ipr_Aim_Vector = p:GetAimVector()
+
+    if (b) and not Ipr_SizeObj(v) then
         local Ipr_Ent_V = v:GetPos() - p:GetEyeTrace().StartPos
+        local Ipr_Aim_Vector = p:GetAimVector()
         local Ipr_Len = Ipr_Ent_V:Length()
         local Ipr_AimVec = Ipr_Aim_Vector:Dot(Ipr_Ent_V) / Ipr_Len
-        local Ipr_Pi = math.pi / 300
-        local Ipr_Inf = Ipr_AimVec < Ipr_Pi
+        local Ipr_Inf = Ipr_AimVec < ((r) and -0.8 or -0.3)
 
         if (Ipr_Inf) then
             return Ipr_RendDraw(v, true)
         end
-    else
+    elseif not b then
         return Ipr_RendDraw(v, true)
     end
 
@@ -93,7 +103,8 @@ local function Ipr_RendEnt()
     if (Ipr_RenderObject.Render.worldspawn.enable) then
         local Ipr_SpWorld = Ipr_UpdTbl["ipr_world"]
         if (Ipr_SpWorld) then
-            for _, obj in ipairs(Ipr_SpWorld) do
+            for o = 1, #Ipr_SpWorld do
+                local obj = Ipr_SpWorld[o]
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, obj)
             end
         end
@@ -102,18 +113,21 @@ local function Ipr_RendEnt()
         local Ipr_SpVeh = Ipr_UpdTbl["ipr_vehicle"]
         if (Ipr_SpVeh) then
             local Ipr_GetVeh = Ipr_Lp:GetVehicle()
-            for _, obj in ipairs(Ipr_SpVeh) do
+            local Ipr_CVeh = IsValid(Ipr_GetVeh) and true or false
+            for o = 1, #Ipr_SpVeh do
+                local obj = Ipr_SpVeh[o]
                 if (obj == Ipr_GetVeh) then
                     continue
                 end
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.vehicle.distance), Ipr_Lp, obj)
+                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.vehicle.distance), Ipr_Lp, obj, Ipr_CVeh)
             end
         end
     end
     if (Ipr_RenderObject.Render.player.enable) then
         local Ipr_SpPlayer = Ipr_UpdTbl["ipr_player"]
         if (Ipr_SpPlayer) then
-            for _, obj in ipairs(Ipr_SpPlayer) do
+            for o = 1, #Ipr_SpPlayer do
+                local obj = Ipr_SpPlayer[o]
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.player.distance), Ipr_Lp, obj)
             end
         end
@@ -121,7 +135,8 @@ local function Ipr_RendEnt()
     if (Ipr_RenderObject.Render.object.enable) then
         local Ipr_SpPropP = Ipr_UpdTbl["ipr_prop"]
         if (Ipr_SpPropP) then
-            for _, obj in ipairs(Ipr_SpPropP) do
+            for o = 1, #Ipr_SpPropP do
+                local obj = Ipr_SpPropP[o]
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.object.distance), Ipr_Lp, obj)
             end
         end
