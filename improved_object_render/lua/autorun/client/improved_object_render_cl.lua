@@ -2,7 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
-local Ipr_Fds
+local Ipr_Fds = false
 
 local function Ipr_RendDist(p, t, d)   
     return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
