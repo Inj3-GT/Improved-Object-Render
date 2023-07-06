@@ -13,6 +13,7 @@ local function Ipr_RendDraw(v, b)
         v:AddEffects(EF_NODRAW)
         return
     end
+    
     v:RemoveEffects(EF_NODRAW)
 end
 
