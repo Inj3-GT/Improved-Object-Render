@@ -3,7 +3,7 @@
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
 local function Ipr_RendDist(p, t, d)   
-    return p:GetPos():DistToSqr(t:GetPos())  < (d * 25000) or false
+    return p:GetPos():DistToSqr(t:GetPos()) < (d * 25000) or false
 end
 
 local function Ipr_RendDraw(v, b)
