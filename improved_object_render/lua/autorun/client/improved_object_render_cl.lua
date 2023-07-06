@@ -1,4 +1,4 @@
-    --- Script By Inj3
+--- Script By Inj3
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
