@@ -1,4 +1,4 @@
---- Script By Inj3
+    --- Script By Inj3
 --- Script By Inj3
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
@@ -31,7 +31,7 @@ local function Ipr_RendObj(b, p, v, r)
     end
 
     if (b) and not Ipr_SizeObj(v) then
-        local Ipr_Ent_V = v:GetPos() - p:GetEyeTrace().StartPos
+        local Ipr_Ent_V = v:GetPos() - EyePos()
         local Ipr_Aim_Vector = p:GetAimVector()
         local Ipr_Len = Ipr_Ent_V:Length()
         local Ipr_AimVec = Ipr_Aim_Vector:Dot(Ipr_Ent_V) / Ipr_Len
