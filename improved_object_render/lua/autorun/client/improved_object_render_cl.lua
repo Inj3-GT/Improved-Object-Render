@@ -231,7 +231,7 @@ local function Ipr_ObjectRender_P()
         draw.DrawText(Ipr_RenderObject.Language.veh_dist, Ipr_Font, w/2,195, color_white, TEXT_ALIGN_CENTER)
         draw.DrawText(Ipr_RenderObject.Language.player_dist, Ipr_Font, w/2,245, color_white, TEXT_ALIGN_CENTER)
         draw.DrawText(Ipr_RenderObject.Language.object_dist, Ipr_Font, w/2,295, color_white, TEXT_ALIGN_CENTER)
-        draw.DrawText(Ipr_RenderObject.Version, Ipr_Font, w-25,415, color_white, TEXT_ALIGN_LEFT)
+        draw.DrawText(Ipr_RenderObject.Version, Ipr_Font, w-5,415, color_white, TEXT_ALIGN_RIGHT)
 
         draw.DrawText("Status : " ..((ipr_) and "ON" or "OFF"), Ipr_Font, 35,28, color_white, TEXT_ALIGN_CENTER)
         draw.DrawText("Inj3", Ipr_Font, 10,415, color_white, TEXT_ALIGN_LEFT)
