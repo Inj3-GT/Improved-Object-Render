@@ -131,10 +131,10 @@ local function Ipr_RendEnt()
         end
     end
     if (Ipr_RenderObject.Render.object.enable) then
-        local Ipr_SpPropP = Ipr_UpdTbl["ipr_prop"]
-        if (Ipr_SpPropP) then
-            for o = 1, #Ipr_SpPropP do
-                local obj = Ipr_SpPropP[o]
+        local Ipr_SpProp = Ipr_UpdTbl["ipr_prop"]
+        if (Ipr_SpProp) then
+            for o = 1, #Ipr_SpProp do
+                local obj = Ipr_SpProp[o]
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.object.distance), Ipr_Lp, obj)
             end
         end
