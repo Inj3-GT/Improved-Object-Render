@@ -2,6 +2,7 @@
 --- Script By Inj3
 --- Script By Inj3
 ----- https://steamcommunity.com/id/Inj3/
+----- https://github.com/Inj3-GT/
 local Ipr_Fds
 
 local function Ipr_RendDist(p, t, d)   
