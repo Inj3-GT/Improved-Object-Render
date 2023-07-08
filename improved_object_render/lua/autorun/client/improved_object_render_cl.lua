@@ -109,14 +109,20 @@ local function Ipr_RendEnt()
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.worldspawn.distance), Ipr_Lp, obj)
             end
         end
-    end
+    end 
     if (Ipr_RenderObject.Render.vehicle.enable) then
         local Ipr_SpVeh = Ipr_UpdTbl["ipr_vehicle"]
         if (Ipr_SpVeh) then
-            local Ipr_GetVeh = Ipr_Lp:GetVehicle()
+            local Ipr_GetVeh, Ipr_FdEnt = Ipr_Lp:GetVehicle(), {}
+            local Ipr_ParVeh = IsValid(Ipr_GetVeh) and Ipr_GetVeh:GetParent() or Ipr_GetVeh
+            Ipr_FdEnt[Ipr_GetVeh] = true
+            
+            if IsValid(Ipr_ParVeh) then
+                Ipr_FdEnt[Ipr_ParVeh] = true
+            end
             for o = 1, #Ipr_SpVeh do
                 local obj = Ipr_SpVeh[o]
-                if (obj == Ipr_GetVeh) then
+                if (Ipr_FdEnt[obj]) then
                     continue
                 end
                 Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.vehicle.distance), Ipr_Lp, obj)
