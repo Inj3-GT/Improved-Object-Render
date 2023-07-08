@@ -114,7 +114,7 @@ local function Ipr_RendEnt()
         local Ipr_SpVeh = Ipr_UpdTbl["ipr_vehicle"]
         if (Ipr_SpVeh) then
             local Ipr_GetVeh, Ipr_FdEnt = Ipr_Lp:GetVehicle(), {}
-            local Ipr_ParVeh = IsValid(Ipr_GetVeh) and Ipr_GetVeh:GetParent() or Ipr_GetVeh
+            local Ipr_ParVeh = IsValid(Ipr_GetVeh) and Ipr_GetVeh:GetParent() or nil
             
             if IsValid(Ipr_GetVeh) then
                 Ipr_FdEnt[Ipr_GetVeh] = true
