@@ -24,7 +24,7 @@ local function Ipr_SizeObj(v)
     return (ipr_s >= 400) and true or false
 end
 
-local function Ipr_RendObj(b, p, v, r)
+local function Ipr_RendObj(b, p, v)
     if (FSpectate) and (FSpectate.getSpecEnt() ~= nil) or (Ipr_Fds) then
         return Ipr_RendDraw(v, false)
     end
@@ -34,7 +34,8 @@ local function Ipr_RendObj(b, p, v, r)
         local Ipr_Aim_Vector = p:GetAimVector()
         local Ipr_Len = Ipr_Ent_V:Length()
         local Ipr_AimVec = Ipr_Aim_Vector:Dot(Ipr_Ent_V) / Ipr_Len
-        local Ipr_Inf = Ipr_AimVec < ((r) and -0.8 or -0.3)
+        local Ipr_Pi = math.pi / 300
+        local Ipr_Inf = Ipr_AimVec < Ipr_Pi
 
         if (Ipr_Inf) then
             return Ipr_RendDraw(v, true)
@@ -112,13 +113,12 @@ local function Ipr_RendEnt()
         local Ipr_SpVeh = Ipr_UpdTbl["ipr_vehicle"]
         if (Ipr_SpVeh) then
             local Ipr_GetVeh = Ipr_Lp:GetVehicle()
-            local Ipr_CVeh = IsValid(Ipr_GetVeh) and true or false
             for o = 1, #Ipr_SpVeh do
                 local obj = Ipr_SpVeh[o]
                 if (obj == Ipr_GetVeh) then
                     continue
                 end
-                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.vehicle.distance), Ipr_Lp, obj, Ipr_CVeh)
+                Ipr_RendObj(Ipr_RendDist(Ipr_Lp, obj, Ipr_RenderObject.Render.vehicle.distance), Ipr_Lp, obj)
             end
         end
     end
