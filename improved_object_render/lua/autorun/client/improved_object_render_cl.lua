@@ -123,7 +123,6 @@ local function Ipr_RendEnt()
                     Ipr_FdEnt[Ipr_ParVeh] = true
                 end
             end
-            PrintTable(Ipr_FdEnt)
             for o = 1, #Ipr_SpVeh do
                 local obj = Ipr_SpVeh[o]
                 if (Ipr_FdEnt[obj]) then
