@@ -114,14 +114,16 @@ local function Ipr_RendEnt()
         local Ipr_SpVeh = Ipr_UpdTbl["ipr_vehicle"]
         if (Ipr_SpVeh) then
             local Ipr_GetVeh, Ipr_FdEnt = Ipr_Lp:GetVehicle(), {}
-            local Ipr_ParVeh = IsValid(Ipr_GetVeh) and Ipr_GetVeh:GetParent() or nil
             
             if IsValid(Ipr_GetVeh) then
                 Ipr_FdEnt[Ipr_GetVeh] = true
+
+                local Ipr_ParVeh = Ipr_GetVeh:GetParent() or nil
+                if IsValid(Ipr_ParVeh) then
+                    Ipr_FdEnt[Ipr_ParVeh] = true
+                end
             end
-            if IsValid(Ipr_ParVeh) then
-                Ipr_FdEnt[Ipr_ParVeh] = true
-            end
+            PrintTable(Ipr_FdEnt)
             for o = 1, #Ipr_SpVeh do
                 local obj = Ipr_SpVeh[o]
                 if (Ipr_FdEnt[obj]) then
