@@ -118,7 +118,7 @@ local function Ipr_RendEnt()
             if IsValid(Ipr_GetVeh) then
                 Ipr_FdEnt[Ipr_GetVeh] = true
 
-                local Ipr_ParVeh = Ipr_GetVeh:GetParent() or nil
+                local Ipr_ParVeh = Ipr_GetVeh:GetParent()
                 if IsValid(Ipr_ParVeh) then
                     Ipr_FdEnt[Ipr_ParVeh] = true
                 end
