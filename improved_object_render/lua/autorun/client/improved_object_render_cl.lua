@@ -63,8 +63,6 @@ local function Ipr_FindObj(t, v)
           return true
         end
     end
-
-    return false
 end
 
 local function Ipr_TblObj()
