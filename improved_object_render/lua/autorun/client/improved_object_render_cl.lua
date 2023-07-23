@@ -20,9 +20,9 @@ end
 
 local function Ipr_SizeObj(v)
     local ipr_s = v:OBBMins() - v:OBBMaxs()
-    ipr_s = ipr_s:LengthSqr()
+    ipr_s = math.abs(ipr_s.x) + math.abs(ipr_s.y) + math.abs(ipr_s.z)
     
-    return (ipr_s >= 100000) and true or false
+    return (ipr_s >= 300) and true or false
 end
 
 local function Ipr_RendObj(b, p, v)
